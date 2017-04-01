@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    Card_Deck::init();
     Image_Deck::init_image();
     Card_Deck deck;
     deck.shuffle();
