@@ -1,14 +1,46 @@
 #ifndef CARD_H
 #define CARD_H
-
-#include "card_color.h"
-#include "card_value.h"
+#include <QtCore>
 
 class Card
 {
+    Q_GADGET
 public:
-    constexpr Card(Card_Color color = Card_Color::None,
-         Card_Value value = Card_Value::V_none)
+    enum Color
+    {
+        none,
+        diamond,
+        club,
+        heart,
+        spade,
+        black_joker,
+        red_joker,
+    };
+    Q_ENUM(Color)
+
+    enum Value
+    {
+        V_none,
+        V_3,
+        V_4,
+        V_5,
+        V_6,
+        V_7,
+        V_8,
+        V_9,
+        V_10,
+        V_jack,
+        V_queen,
+        V_king,
+        V_ace,
+        V_2,
+        V_black_joker,
+        V_red_joker,
+    };
+    Q_ENUM(Value)
+public:
+    Card(Card::Color color = Card::Color::none,
+         Card::Value value = Card::Value::V_none)
         :m_color(color), m_value(value)
     {
 
@@ -16,31 +48,25 @@ public:
 
     bool isValid() const
     {
-        return m_color != Card_Color::None
-                && m_value != Card_Value::V_none;
+        return m_color != Card::Color::none
+                && m_value != Card::Value::V_none;
     }
 
-    void setColor(Card_Color color)
-    {
-        m_color = color;
-    }
-    void setValue(Card_Value value)
-    {
-        m_value = value;
-    }
-
-    Card_Color color() const
+    Card::Color color() const
     {
         return m_color;
     }
-    Card_Value value() const
+    Card::Value value() const
     {
         return m_value;
     }
 
 private:
-    Card_Color m_color;
-    Card_Value m_value;
+    Card::Color m_color;
+    Card::Value m_value;
 };
+
+QDebug operator<<(QDebug os, const Card& card);
+#include "card_compare.h"
 
 #endif // CARD_H

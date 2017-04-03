@@ -1,15 +1,8 @@
-#ifndef CARD_COLOR_H
-#define CARD_COLOR_H
+#ifndef Card::Color_H
+#define Card::Color_H
+///
+/// \brief 扑克牌颜色，大小顺序为 大王>小王>黑桃>红心>梅花>方块
+///
 
-enum class Card_Color
-{
-    None,
-    Diamond,
-    Club,
-    Heart,
-    Spade,
-    Black_Joker,
-    Red_Joker,
-};
 
-#endif // CARD_COLOR_H
+#endif // Card::Color_H

@@ -1,28 +1,19 @@
-#include "widget.h"
-#include <QtWidgets>
 #include <QApplication>
-#include "image_deck.h"
-#include "card_deck.h"
+#include "static_deck.h"
+#include "static_cardimage.h"
+#include "testhandinfowidget.h"
+#include "comparehandinfowidget.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Card_Deck::init();
-    Image_Deck::init_image();
-    Card_Deck deck;
-    deck.shuffle();
+    Static_Deck::init();
+    Static_CardImage::init_image();
 
-    QHBoxLayout *layout = new QHBoxLayout;
-    for (int i=0; i<4; ++i)
-    {
-        Card card = deck.get_card(i);
-        QPixmap pixmap = Image_Deck::get_image(card);
-        QLabel *l = new QLabel;
-        l->setPixmap(pixmap);
-        layout->addWidget(l);
-    }
-    QWidget w;
-    w.setLayout(layout);
+    qDebug() << "card size: " << Static_CardImage::image_size();
+
+    CompareHandInfoWidget w;
     w.show();
+
     return a.exec();
 }

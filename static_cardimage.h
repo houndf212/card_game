@@ -1,15 +1,17 @@
-#ifndef IMAGE_DECK_H
-#define IMAGE_DECK_H
+#ifndef STATIC_CARDIMAGE_H
+#define STATIC_CARDIMAGE_H
 #include <QtCore>
 #include <QPixmap>
 #include <map>
 #include "card.h"
 
-class Image_Deck
+class Static_CardImage
 {
-    typedef std::map<Card, QPixmap, bool (*)(const Card&, const Card&)> Map;
+public:
+    typedef std::map<Card, QPixmap, Card_Compare> Map;
 public:
     static void init_image();
+    static QSize image_size();
     static QPixmap get_image(const Card& c);
 private:
     static QString get_file_name(const Card& c);
@@ -18,4 +20,4 @@ private:
     static Map m_map;
 };
 
-#endif // IMAGE_DECK_H
+#endif // STATIC_CARDIMAGE_H
