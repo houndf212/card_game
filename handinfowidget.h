@@ -16,8 +16,10 @@ private:
     QLabel *m_size;
     QLabel *m_type;
     QLabel *m_type_size;
+    QLabel *m_adjust_size;
     QLabel *m_prime;
     QLabel *m_prime_size;
+
 };
 
 #endif // HANDINFOWIDGET_H

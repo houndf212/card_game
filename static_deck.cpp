@@ -13,14 +13,14 @@ void Static_Deck::init()
 
     int index = 0;
 
-    int start_val = Card::Value::V_3;
-    int end_val = Card::Value::V_2;
+    int start_val = Card::V_3;
+    int end_val = Card::V_ace;
 
     Q_ASSERT(end_val > start_val);
     for (; start_val <= end_val; ++start_val)
     {
-        int start_col = Card::Color::diamond;
-        int end_col = Card::Color::spade;
+        int start_col = Card::diamond;
+        int end_col = Card::spade;
 
         Q_ASSERT(end_col > start_col);
         for (; start_col <= end_col; ++start_col)
@@ -31,11 +31,22 @@ void Static_Deck::init()
         }
     }
 
-    Card black_joker(Card::Color::black_joker, Card::Value::V_black_joker);
+    int start_col = Card::diamond;
+    int end_col = Card::spade;
+
+    Q_ASSERT(end_col > start_col);
+    for (; start_col <= end_col; ++start_col)
+    {
+        Card c(static_cast<Card::Color>(start_col), Card::V_2);
+        CARD_INDEX.insert({c, index});
+        INIT_DECK[index++] = c;
+    }
+
+    Card black_joker(Card::black_joker, Card::V_joker);
     CARD_INDEX.insert({black_joker, index});
     INIT_DECK[index++] = black_joker;
 
-    Card red_joker(Card::Color::red_joker, Card::Value::V_red_joker);
+    Card red_joker(Card::red_joker, Card::V_joker);
     CARD_INDEX.insert({red_joker, index});
     INIT_DECK[index++] = red_joker;
 

@@ -8,7 +8,7 @@ class Card
 public:
     enum Color
     {
-        none,
+        C_none,
         diamond,
         club,
         heart,
@@ -20,8 +20,8 @@ public:
 
     enum Value
     {
-        V_none,
-        V_3,
+        V_none = 0,
+        V_3 = 1,
         V_4,
         V_5,
         V_6,
@@ -33,14 +33,13 @@ public:
         V_queen,
         V_king,
         V_ace,
-        V_2,
-        V_black_joker,
-        V_red_joker,
+        V_2 = V_ace+2, //用+2跳过检验连续
+        V_joker = V_2+2,
     };
     Q_ENUM(Value)
 public:
-    Card(Card::Color color = Card::Color::none,
-         Card::Value value = Card::Value::V_none)
+    Card(Card::Color color = Card::C_none,
+         Card::Value value = Card::V_none)
         :m_color(color), m_value(value)
     {
 
@@ -48,8 +47,8 @@ public:
 
     bool isValid() const
     {
-        return m_color != Card::Color::none
-                && m_value != Card::Value::V_none;
+        return m_color != Card::C_none
+                && m_value != Card::V_none;
     }
 
     Card::Color color() const
