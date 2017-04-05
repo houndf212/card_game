@@ -35,12 +35,15 @@ public:
     int prime_size() const { return m_prime_size; }
 private:
     void set_null();
-    void hand_size_1_plus();
+    void hand_size_1();
+    void hand_size_2();
+    void hand_size_3_plus();
 private:
     void count_value();
     void find_prime();
     int find_count_size(int count) const;
     Card::Value find_min_value_by_count(int count) const;
+    std::pair<int, Card::Value> find_max_group_by_count(int count) const;
     bool check_continue() const;
 private:
     Type m_type;           // 属于那种出牌类型
