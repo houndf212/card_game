@@ -6,10 +6,10 @@ Static_CardImage::Map Static_CardImage::m_map(&order_less);
 QString Static_CardImage::get_file_name(const Card &c)
 {
     QMetaEnum mcolor = QMetaEnum::fromType<Card::Color>();
-    const char* col = mcolor.key(c.color());
+    const char* col = mcolor.valueToKey(c.color());
 
     QMetaEnum mvalue = QMetaEnum::fromType<Card::Value>();
-    const char* val = mvalue.key(c.value());
+    const char* val = mvalue.valueToKey(c.value());
     QString str = QString(":/png_cards/") + col + "_" + val + ".png";
     return str.remove("V_");
 }
