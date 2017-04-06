@@ -10,7 +10,6 @@ Hand_Info::Hand_Info()
     ,m_prime(Card::C_none, Card::V_none)
     ,m_prime_size(0)
     ,m_adjust_prime_size(0)
-    ,m_countMap(&value_less)
 {
 
 }
@@ -61,11 +60,11 @@ void Hand_Info::hand_size_2()
         m_prime = card2;
         m_prime_size = 2;
     }
-    else if (value_equal(card1, card2))
+    else if (card1.value() == card2.value())
     {
         m_type = Type::AA;
         m_type_size = 1;
-        m_prime = std::max(card1, card2);
+        m_prime = std::max(card1, card2, std::less<Card>());
         m_prime_size = 2;
     }
 }
@@ -83,7 +82,7 @@ void Hand_Info::hand_size_3_plus()
     // 总体来说 2 比较科学 而且 在 做 "提示" 功能的时候比较容易实现
     //********************************************************************
 
-    count_value();
+    m_countMap = Hand_Helper::count_value(m_cards);
 
     const int cards_size = m_cards.size();
     const int count_size = m_countMap.size();
@@ -105,9 +104,10 @@ void Hand_Info::hand_size_3_plus()
         return;
     }
 
-    if (find_count_size(3) == 0 && find_count_size(4) == 0) // 最大含有count为2
+    if (Hand_Helper::find_count_size(m_countMap, 3, false) == 0
+            && Hand_Helper::find_count_size(m_countMap, 4, false) == 0) // 最大含有count为2
     {
-        Q_ASSERT(find_count_size(2) != 0);
+        Q_ASSERT(Hand_Helper::find_count_size(m_countMap, 2, false) != 0);
         if (cards_size >= 6 && cards_size == 2*count_size) //全是对子，且大于3对
         {
             Card first = *m_cards.cbegin();
@@ -123,7 +123,7 @@ void Hand_Info::hand_size_3_plus()
         return;
     }
 
-    if (find_count_size(4) == 1) // 含有count为4 只能是 4带2 或者4带2对，且不能叠加，所以可以先处理
+    if (Hand_Helper::find_count_size(m_countMap, 4, false) == 1) // 含有count为4 只能是 4带2 或者4带2对，且不能叠加，所以可以先处理
     {
         if (cards_size == 4)
         {
@@ -144,8 +144,8 @@ void Hand_Info::hand_size_3_plus()
         }
 
         if(cards_size == 8
-                &&find_count_size(1) == 0
-                && find_count_size(3) ==0) // 4带2对
+                && Hand_Helper::find_count_size(m_countMap, 1, false) == 0
+                && Hand_Helper::find_count_size(m_countMap, 3, false) ==0) // 4带2对
         {
             m_type = Type::AAAABBCC;
             m_type_size = 1;
@@ -159,8 +159,7 @@ void Hand_Info::hand_size_3_plus()
 
     // else 只能是3带了
 
-
-    std::tie(m_type_size, m_prime) = find_possible_max_group_by_count(3, true);
+    std::tie(m_type_size, m_prime) = Hand_Helper::find_max_group_by_count(m_countMap , 3, true);
     if (m_type_size > 0)
     {
         if (cards_size == 3*m_type_size) //333 333444 333444555
@@ -184,7 +183,8 @@ void Hand_Info::hand_size_3_plus()
                     return;
                 }
 
-                if (cards_size == 5*test && find_count_size(1) == 0)
+                if (cards_size == 5*test
+                        && Hand_Helper::find_count_size(m_countMap, 1, false) == 0)
                 {
                     m_type = Type::AAABB;
                     m_adjust_prime_size = m_type_size - test;
@@ -199,73 +199,7 @@ void Hand_Info::hand_size_3_plus()
     Q_ASSERT(m_type == Type::Invalid);
 }
 
-void Hand_Info::count_value()
-{
-    for (auto c : m_cards)
-    {
-        m_countMap[c]++;
-    }
-}
-
-int Hand_Info::find_count_size(int count) const
-{
-    int size = 0;
-    for (auto p : m_countMap)
-    {
-        if (p.second == count)
-            ++size;
-    }
-    return size;
-}
-// 返回可能的最大连续， 即 count为2可以代表1 count为3 可以代表2 count为4 可以代表3
-// 返回最大连续 堆
-// eg 3456789 ,1 -> 9, 4
-// eg 3344667788, 2-> 8, 3
-// eg 3334 ,3 -> 3, 1
-// eg 333444 666, 3 -> 4, 2
-// eg 333444 555666, 3 -> 6, 2
-// eg 333444555777, 3 -> 6, 3
-// eg 3334445555, 3 -> 4, 3
-// eg 3334445555, 4 -> 5, 1
-// eg 33335555, 4-> 5, 1
-// with bool true
-// eg 3455677 , 1, true -> 7, 5
-// eg 33444555566, 2, true -> 6, 4
-// eg 33444555566, 3, true -> 5, 2
-std::pair<int, Card> Hand_Info::find_possible_max_group_by_count(int count, bool can_over_flow) const
-{
-    std::map<int, Card> c_map;
-
-    Card val(Card::C_none, Card::V_none);
-    int c_size = 0;
-
-    c_map[c_size] = val;
-
-    for (auto p : m_countMap)
-    {
-        if (p.second == count || (can_over_flow && p.second > count))
-        {
-            //3334455566677788 == 3567
-            if (val.value()+1 == p.first.value()) // none+1 = v_3
-            {
-                val = p.first;
-                ++c_size;
-            }
-            else // v_3 +1 != v_5
-            {
-                c_map[c_size] = val; // push 1, v_3
-                val = p.first; //val = 5
-                c_size = 1;
-            }
-
-        }
-    }
-    c_map[c_size] = val;
-//    qDebug() << *c_map.crbegin();
-    return *c_map.crbegin();
-}
-
-bool operator < (const Hand_Info &info1, const Hand_Info &info2)
+bool hand_less(const Hand_Info &info1, const Hand_Info &info2)
 {
     // 0 必须是 valid 才有比较的意义
     Q_ASSERT(info1.isValid() && info2.isValid());
@@ -295,7 +229,7 @@ bool operator < (const Hand_Info &info1, const Hand_Info &info2)
                     return true;
             }
 
-            return value_less(info1.prime(), info2.prime());
+            return info1.prime().value() < info2.prime().value();
         }
         else
             return false;

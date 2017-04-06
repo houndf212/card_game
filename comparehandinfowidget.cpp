@@ -50,7 +50,7 @@ void CompareHandInfoWidget::onChanged()
 
     if (info1.isValid() && info2.isValid())
     {
-        if (info1 < info2)
+        if (hand_less(info1, info2))
             m_small_big->setText("<");
         else
             m_small_big->setText(">");

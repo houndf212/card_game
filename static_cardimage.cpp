@@ -1,7 +1,7 @@
 #include "static_cardimage.h"
 #include "static_deck.h"
 
-Static_CardImage::Map Static_CardImage::m_map(&order_less);
+Static_CardImage::Map Static_CardImage::m_map;
 
 QString Static_CardImage::get_file_name(const Card &c)
 {

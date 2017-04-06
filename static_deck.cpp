@@ -4,7 +4,7 @@
 #include <QtGlobal>
 
 std::array<Card, Static_Deck::SIZE> Static_Deck::INIT_DECK;
-Static_Deck::CardIndex Static_Deck::CARD_INDEX(&order_less);
+Static_Deck::CardIndex Static_Deck::CARD_INDEX;
 
 void Static_Deck::init()
 {

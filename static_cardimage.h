@@ -8,7 +8,7 @@
 class Static_CardImage
 {
 public:
-    typedef std::map<Card, QPixmap, Card_Compare> Map;
+    typedef std::map<Card, QPixmap> Map;
 public:
     static void init_image();
     static QSize image_size();

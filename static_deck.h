@@ -14,7 +14,7 @@ public:
     static int card_index(const Card& card);
 private:
     static std::array<Card, SIZE> INIT_DECK;
-    typedef std::map<Card, int, Card_Compare> CardIndex;
+    typedef std::map<Card, int> CardIndex;
     static CardIndex CARD_INDEX;
 };
 

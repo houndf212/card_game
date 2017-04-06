@@ -39,7 +39,10 @@ SOURCES += main.cpp\
     cardchooser.cpp \
     handinfowidget.cpp \
     testhandinfowidget.cpp \
-    comparehandinfowidget.cpp
+    comparehandinfowidget.cpp \
+    hand_hinter.cpp \
+    hand_helper.cpp \
+    hand_hinter_a.cpp
 
 HEADERS  += \
     card.h \
@@ -55,7 +58,10 @@ HEADERS  += \
     cardchooser.h \
     handinfowidget.h \
     testhandinfowidget.h \
-    comparehandinfowidget.h
+    comparehandinfowidget.h \
+    hand_hinter.h \
+    hand_helper.h \
+    hand_hinter_a.h
 
 RESOURCES += \
     res_cards.qrc

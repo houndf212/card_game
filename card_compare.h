@@ -3,50 +3,27 @@
 #include "card.h"
 
 //定义牌比较大小
-
-typedef bool (*Card_Compare)(const Card& , const Card& );
-
-inline bool color_less(const Card& c1, const Card& c2)
-{
-    return c1.color() < c2.color();
-}
-
-inline bool color_equal(const Card& c1, const Card& c2)
-{
-    return c1.color() == c2.color();
-}
-
-inline bool value_less(const Card& c1, const Card& c2)
-{
-    return c1.value() < c2.value();
-}
-
-inline bool value_equal(const Card& c1, const Card& c2)
-{
-    return c1.value() == c2.value();
-}
-
-inline bool order_equal(const Card& c1, const Card& c2)
-{
-    return color_equal(c1, c2) && value_equal(c1, c2);
-}
-
+namespace Card_Compare{
 bool order_less(const Card& c1, const Card& c2);
-
-inline bool operator<(const Card& c1, const Card& c2)
-{
-    return order_less(c1, c2);
 }
 
-//namespace std
-//{
-//template<>
-//struct less<Card>
-//{
-//    bool operator ()(const Card& c1, const Card& c2)
-//    {
-//        return order_less(c1, c2);
-//    }
-//};
-//}
+namespace std {
+template<>
+struct less<Card>
+{
+    bool operator()(const Card& c1, const Card& c2) const
+    {
+        return Card_Compare::order_less(c1, c2);
+    }
+};
+}
+struct Value_Less
+{
+public:
+    bool operator()(const Card& c1, const Card& c2) const
+    {
+        return c1.value() < c2.value();
+    }
+};
+
 #endif // CARD_COMPARE_H
