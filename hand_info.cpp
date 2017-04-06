@@ -72,43 +72,102 @@ void Hand_Info::hand_size_2()
 
 void Hand_Info::hand_size_3_plus()
 {
-    const int card_size = m_cards.size();
+    // *******************************************************************
+    //  54443333 -> 53+444333
+    //  333344455556 ->333444555+356
+    // 上述问题2个解决方案
+    // 1 出现4个必须是 4带1或者4带2，
+    // 2 规定 4带不能重复 只能6张牌或者8张牌, 即是说 AAAABC AAAABBCC 没有+
+    // 那么在处理3带的时候在特殊化处理， 添加上4个可以回变成3个，那么只能是AAAB+型
+    //********************************************************************
+    // 总体来说 2 比较科学 而且 在 做 "提示" 功能的时候比较容易实现
+    //********************************************************************
 
     count_value();
-    find_prime();
 
-    Q_ASSERT(m_type_size==1 || (m_type_size>1 && m_prime.value() < Card::V_2));
+    const int cards_size = m_cards.size();
+    const int count_size = m_countMap.size();
 
-    // 现在来确定属于什么类型
-
-    switch (m_prime_size)
+    if (cards_size == count_size) // 全是单牌
     {
-    case 1: // 56789
-    {
-        if (card_size >= 5 && card_size == m_type_size) // 56789
+        if (cards_size >= 5) // 必须是5张以上
         {
-            m_type = Type::A;
+            Card first = *m_cards.cbegin();
+            Card end = *m_cards.crbegin();
+            if (cards_size == end.value()-first.value()+1) //连续
+            {
+                m_type = Type::A;
+                m_type_size = cards_size;
+                m_prime = end;
+                m_prime_size = 1;
+            }
         }
+        return;
     }
-        break;
-    case 2: // 334455
+
+    if (find_count_size(3) == 0 && find_count_size(4) == 0) // 最大含有count为2
     {
-        if (m_type_size>=3 && card_size == 2*m_type_size) // 33445566
+        Q_ASSERT(find_count_size(2) != 0);
+        if (cards_size >= 6 && cards_size == 2*count_size) //全是对子，且大于3对
         {
-            m_type = Type::AA;
+            Card first = *m_cards.cbegin();
+            Card end = *m_cards.crbegin();
+            if (count_size == end.value()-first.value()+1) //连续
+            {
+                m_type = Type::AA;
+                m_type_size = count_size;
+                m_prime = end;
+                m_prime_size = 2;
+            }
         }
+        return;
     }
-        break;
-    case 3: // 333 3334 33344 333444 and ++
+
+    if (find_count_size(4) == 1) // 含有count为4 只能是 4带2 或者4带2对，且不能叠加，所以可以先处理
     {
-        if (card_size == 3*m_type_size) //333 333444 333444555
+        if (cards_size == 4)
+        {
+            m_type = Type::Bomb;
+            m_type_size = 1;
+            m_prime = *m_cards.crbegin();
+            m_prime_size = 4;
+            return;
+        }
+
+        if (cards_size == 6) // 只能是 4带2
+        {
+            m_type = Type::AAAABC;
+            m_type_size = 1;
+            m_prime = *m_cards.crbegin();
+            m_prime_size = 4;
+            return;
+        }
+
+        if(cards_size == 8
+                &&find_count_size(1) == 0
+                && find_count_size(3) ==0) // 4带2对
+        {
+            m_type = Type::AAAABBCC;
+            m_type_size = 1;
+            m_prime = *m_cards.crbegin();
+            m_prime_size = 4;
+            return;
+        }
+
+        // 这里不return的原因是 可能存在这类情况 33344445 =》 333444+45
+    }
+
+    // else 只能是3带了
+
+
+    std::tie(m_type_size, m_prime) = find_possible_max_group_by_count(3, true);
+    if (m_type_size > 0)
+    {
+        if (cards_size == 3*m_type_size) //333 333444 333444555
         {
             m_type = Type::AAA;
-        }
-        else if(card_size == 5*m_type_size
-                && find_count_size(1) == 0) //33344 3334445566 3334445555
-        {
-            m_type = Type::AAABB;
+            m_prime_size = 3;
+            return;
         }
         else //3334 333444?? 333444555??? 以及特殊情况 =》 2333+444555666777
         {
@@ -117,61 +176,27 @@ void Hand_Info::hand_size_3_plus()
             int test = m_type_size;
             do
             {
-                if (card_size == 4*test)
+                if (cards_size == 4*test)
                 {
                     m_type = Type::AAAB;
                     m_adjust_prime_size = m_type_size - test;
                     m_type_size = test;
-                    break;
+                    return;
                 }
-                --test;
-            }
-            while(card_size <= 4*test);
-        }
 
-    }
-        break;
-    case 4: // 3333 333345 333344 33334455
-    {
-        if (card_size == 4) //特殊处理炸弹
-        {
-            m_type = Type::Bomb;
-        }
-        else if (card_size == 4*m_type_size)
-        {
-            m_type = Type::AAAA;
-        }
-        else
-        {
-            int test = m_type_size;
-            do
-            {
-                if (card_size == 6*test) //333345+ // 特殊情况 345555 + 666677778888
+                if (cards_size == 5*test && find_count_size(1) == 0)
                 {
-                    m_type = Type::AAAABC;
+                    m_type = Type::AAABB;
                     m_adjust_prime_size = m_type_size - test;
                     m_type_size = test;
-                    break;
-                }
-                else if(card_size == 8*test
-                        &&find_count_size(1) == 0
-                        && find_count_size(3) ==0) //33335566 33335555 333344445555889999 特殊情况 33446666+77778888
-                {
-                    m_type = Type::AAAABBCC;
-                    m_adjust_prime_size = m_type_size - test;
-                    m_type_size = test;
-                    break;
+                    return;
                 }
                 --test;
             }
-            while(card_size <= 6*test || card_size <=8*test);
+            while(cards_size <= 5*test);
         }
     }
-        break;
-    default:
-        Q_ASSERT(false);
-        break;
-    }
+    Q_ASSERT(m_type == Type::Invalid);
 }
 
 void Hand_Info::count_value()
@@ -180,49 +205,6 @@ void Hand_Info::count_value()
     {
         m_countMap[c]++;
     }
-}
-
-void Hand_Info::find_prime()
-{
-    int cards_size = m_cards.size();
-    int count_size = m_countMap.size();
-
-    if (cards_size == count_size) // or find_count_size(1) == cards_size  => A+
-    {
-        Q_ASSERT(find_count_size(1) == cards_size);
-        std::tie(m_type_size, m_prime) = find_max_group_by_count(1);
-        m_prime_size = 1;
-        return;
-    }
-
-    if (find_count_size(3) == 0 &&find_count_size(4) ==0) // 345 34566 335566 33445566
-    {
-        Q_ASSERT(find_count_size(2) != 0);
-        std::tie(m_type_size, m_prime) = find_max_group_by_count(2);
-        m_prime_size = 2;
-        return;
-    }
-
-    if (find_count_size(3) >= find_count_size(4))
-    {
-        std::tie(m_type_size, m_prime) = find_max_group_by_count(3);
-        m_prime_size = 3;
-        return;
-    }
-    // 333?+88889999 (1:2)  333555+777788889999 (2:3) 18张牌   333444555?+5*4 (3:5) 超过20张
-    std::tie(m_type_size, m_prime) = find_max_group_by_count(4);
-    m_prime_size = 4;
-
-    // *******************************************************************
-    // TODO 54443333 -> 53+444333
-    // TODO 333344455556 ->333444555+356
-    // 上述问题2个解决方案
-    // 1 出现4个必须是 4带1或者4带2，
-    // 2 规定 4带不能重复 只能6张牌或者8张牌, 即是说 AAAABC AAAABBCC 没有+
-    // 那么在处理3带的时候在特殊化处理， 添加上4个可以回变成3个，那么只能是AAAB+型
-    //********************************************************************
-    // 总体来说 2 比较科学 而且 在 做 "提示" 功能的时候比较容易实现
-    //********************************************************************
 }
 
 int Hand_Info::find_count_size(int count) const
@@ -235,7 +217,7 @@ int Hand_Info::find_count_size(int count) const
     }
     return size;
 }
-
+// 返回可能的最大连续， 即 count为2可以代表1 count为3 可以代表2 count为4 可以代表3
 // 返回最大连续 堆
 // eg 3456789 ,1 -> 9, 4
 // eg 3344667788, 2-> 8, 3
@@ -246,8 +228,11 @@ int Hand_Info::find_count_size(int count) const
 // eg 3334445555, 3 -> 4, 3
 // eg 3334445555, 4 -> 5, 1
 // eg 33335555, 4-> 5, 1
-
-std::pair<int, Card> Hand_Info::find_max_group_by_count(int count) const
+// with bool true
+// eg 3455677 , 1, true -> 7, 5
+// eg 33444555566, 2, true -> 6, 4
+// eg 33444555566, 3, true -> 5, 2
+std::pair<int, Card> Hand_Info::find_possible_max_group_by_count(int count, bool can_over_flow) const
 {
     std::map<int, Card> c_map;
 
@@ -258,7 +243,7 @@ std::pair<int, Card> Hand_Info::find_max_group_by_count(int count) const
 
     for (auto p : m_countMap)
     {
-        if (p.second == count)
+        if (p.second == count || (can_over_flow && p.second > count))
         {
             //3334455566677788 == 3567
             if (val.value()+1 == p.first.value()) // none+1 = v_3
@@ -280,6 +265,17 @@ std::pair<int, Card> Hand_Info::find_max_group_by_count(int count) const
     return *c_map.crbegin();
 }
 
+// 返回最大连续 堆
+// eg 3456789 ,1 -> 9, 4
+// eg 3344667788, 2-> 8, 3
+// eg 3334 ,3 -> 3, 1
+// eg 333444 666, 3 -> 4, 2
+// eg 333444 555666, 3 -> 6, 2
+// eg 333444555777, 3 -> 6, 3
+// eg 3334445555, 3 -> 4, 3
+// eg 3334445555, 4 -> 5, 1
+// eg 33335555, 4-> 5, 1
+
 bool operator < (const Hand_Info &info1, const Hand_Info &info2)
 {
     // 0 必须是 valid 才有比较的意义
@@ -299,7 +295,7 @@ bool operator < (const Hand_Info &info1, const Hand_Info &info2)
         if (info1.type_size() == info2.type_size())
         {
             // 双王的时候 下面assert 不成立
-            //Q_ASSERT(info1.size() == info2.size());
+            // Q_ASSERT(info1.size() == info2.size());
             // 双王的时候 value 一样
             if (info1.prime_size()==1)
             {

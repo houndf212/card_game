@@ -16,7 +16,6 @@ public:
         AAA,        //333 （1+）
         AAAB,       //3337（1+）
         AAABB,      //3338 (1+)
-        AAAA,       //33333 (2+)
         AAAABC,     //33333jk (1+) or 333344(1+)
         AAAABBCC,   //333337799 (1+) or 33334444
         Bomb,         //two joker 必定是black_joker+red_joker
@@ -40,9 +39,8 @@ private:
     void hand_size_3_plus();
 private:
     void count_value();
-    void find_prime();
     int find_count_size(int count) const;
-    std::pair<int, Card> find_max_group_by_count(int count) const;
+    std::pair<int, Card> find_possible_max_group_by_count(int count, bool can_over_flow) const;
 private:
     Type m_type;                // 属于那种出牌类型
     int m_type_size;            // 出牌类型的长度
