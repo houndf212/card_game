@@ -265,17 +265,6 @@ std::pair<int, Card> Hand_Info::find_possible_max_group_by_count(int count, bool
     return *c_map.crbegin();
 }
 
-// 返回最大连续 堆
-// eg 3456789 ,1 -> 9, 4
-// eg 3344667788, 2-> 8, 3
-// eg 3334 ,3 -> 3, 1
-// eg 333444 666, 3 -> 4, 2
-// eg 333444 555666, 3 -> 6, 2
-// eg 333444555777, 3 -> 6, 3
-// eg 3334445555, 3 -> 4, 3
-// eg 3334445555, 4 -> 5, 1
-// eg 33335555, 4-> 5, 1
-
 bool operator < (const Hand_Info &info1, const Hand_Info &info2)
 {
     // 0 必须是 valid 才有比较的意义
