@@ -1,4 +1,4 @@
-#include "hand_hinter.h"
+#include "hinter.h"
 #include "hinter_helper.h"
 
 CardList Hand_Hinter::next_hint()
@@ -160,13 +160,10 @@ void Hand_Hinter::process_type_AAAABC()
         }
     }
 
-    //second find BC, use hinter
+    //second find BC
     for (CardListList::const_iterator it=lst.begin(); it!=lst.end(); ++it)
     {
-        Card vc = it->front();
-        CardList pre;
-        pre.push_back({Card::diamond, Card::V_none});
-        CardList all = Hinter_Helper::remove_in(m_cards, vc);
+        CardList all = Hinter_Helper::remove_list(m_cards, *it);
     }
 
 }
@@ -190,4 +187,5 @@ void Hand_Hinter::add_bomb_to_end()
         m_hint_queue.push(b);
     }
 }
+
 

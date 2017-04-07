@@ -1,5 +1,5 @@
-#ifndef HAND_HINTER_H
-#define HAND_HINTER_H
+#ifndef HINTER_H
+#define HINTER_H
 #include <queue>
 #include "hand_info.h"
 #include "hand_helper.h"
@@ -36,4 +36,4 @@ private:
     std::queue<CardList> m_hint_queue;
 };
 
-#endif // HAND_HINTER_H
+#endif // HINTER_H

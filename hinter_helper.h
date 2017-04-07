@@ -5,7 +5,8 @@
 
 namespace Hinter_Helper
 {
-CardList remove_in(const CardList& source, const Card &card);
+CardList remove_list(const CardList& source, const CardList& m);
+CardList remove(const CardList& source, const Card &card);
 CardListList find_B_by_map(const Hand_Helper::ValueMap& cmap, Card::Value val);
 CardListList find_B(const CardList& cards);
 CardListList find_BB(const Card& cards);

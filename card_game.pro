@@ -12,7 +12,7 @@ TARGET = card_game
 TEMPLATE = app
 
 #mingw32 make 编译问题, 不用预编译头
-#PRECOMPILED_HEADER = pch.h
+PRECOMPILED_HEADER = pch.h
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -33,16 +33,16 @@ SOURCES += main.cpp\
     static_cardimage.cpp \
     deck.cpp \
     card_item.cpp \
-    hand_info.cpp \
     deck_rect.cpp \
     item_rect.cpp \
     cardchooser.cpp \
     handinfowidget.cpp \
     testhandinfowidget.cpp \
     comparehandinfowidget.cpp \
-    hand_hinter.cpp \
     hand_helper.cpp \
-    hinter_helper.cpp
+    hinter_helper.cpp \
+    hinter.cpp \
+    hand_info.cpp
 
 HEADERS  += \
     card.h \
@@ -59,9 +59,9 @@ HEADERS  += \
     handinfowidget.h \
     testhandinfowidget.h \
     comparehandinfowidget.h \
-    hand_hinter.h \
     hand_helper.h \
-    hinter_helper.h
+    hinter_helper.h \
+    hinter.h
 
 RESOURCES += \
     res_cards.qrc
