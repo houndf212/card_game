@@ -5,8 +5,7 @@
 
 namespace Hand_Helper
 {
-typedef std::map<Card, CardList, Value_Less> ValueMap;
-typedef ValueMap::value_type ValuePair;
+
 
 ValueMap count_value(const CardList &cards);
 

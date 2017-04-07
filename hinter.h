@@ -26,12 +26,13 @@ private:
     void process_type_AAAABC();
     void process_type_AAAABBCC();
 
+    void push_to_front(const CardListList& lst);
     void add_bomb_to_end();
 private:
 
 private:
     CardList m_cards;
-    Hand_Helper::ValueMap m_cmap;
+    ValueMap m_cmap;
     Hand_Info m_pre_hand;
     std::queue<CardList> m_hint_queue;
 };

@@ -3,7 +3,7 @@
 #include "static_cardimage.h"
 #include "testhandinfowidget.h"
 #include "comparehandinfowidget.h"
-#include "hand_hinter.h"
+#include "hinter.h"
 
 void test_hinter()
 {

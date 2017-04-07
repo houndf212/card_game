@@ -1,6 +1,6 @@
 #include "hand_helper.h"
 
-Hand_Helper::ValueMap Hand_Helper::count_value(const CardList &cards)
+ValueMap Hand_Helper::count_value(const CardList &cards)
 {
     ValueMap cmap;
     for (Card c : cards)
@@ -25,7 +25,7 @@ Hand_Helper::ValueMap Hand_Helper::count_value(const CardList &cards)
 // eg 3455677 , 1, true -> 7, 5
 // eg 33444555566, 2, true -> 6, 4
 // eg 33444555566, 3, true -> 5, 2
-std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::ValueMap &cmap, size_t count, bool can_over_flow)
+std::pair<int, Card> Hand_Helper::find_max_group_by_count(const ValueMap &cmap, size_t count, bool can_over_flow)
 {
     std::map<int, Card> c_map;
 
@@ -57,7 +57,7 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::Val
     return *c_map.crbegin();
 }
 
-int Hand_Helper::find_count_size(const Hand_Helper::ValueMap &cmap, size_t count, bool can_over_flow)
+int Hand_Helper::find_count_size(const ValueMap &cmap, size_t count, bool can_over_flow)
 {
     int size = 0;
     for (const ValuePair& p : cmap)
@@ -68,7 +68,7 @@ int Hand_Helper::find_count_size(const Hand_Helper::ValueMap &cmap, size_t count
     return size;
 }
 
-CardListList Hand_Helper::find_all_bomb(const Hand_Helper::ValueMap &cmap, Card::Value floor)
+CardListList Hand_Helper::find_all_bomb(const ValueMap &cmap, Card::Value floor)
 {
     CardListList lst;
     for (const ValuePair& p : cmap)

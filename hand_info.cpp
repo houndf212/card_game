@@ -81,7 +81,7 @@ void Hand_Info::hand_size_3_plus()
     // 总体来说 2 比较科学 而且 在 做 "提示" 功能的时候比较容易实现
     //********************************************************************
 
-    Hand_Helper::ValueMap cmap = Hand_Helper::count_value(m_cards);
+    ValueMap cmap = Hand_Helper::count_value(m_cards);
 
     const int cards_size = m_cards.size();
     const int count_size = cmap.size();

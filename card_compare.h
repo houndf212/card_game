@@ -1,5 +1,9 @@
 #ifndef CARD_COMPARE_H
 #define CARD_COMPARE_H
+
+#include <set>
+#include <vector>
+#include <map>
 #include "card.h"
 
 //定义牌比较大小
@@ -45,5 +49,12 @@ public:
         return c1.value() == c2.value();
     }
 };
+
+typedef std::set<Card> CardSet;
+typedef std::vector<Card> CardList;
+typedef std::vector<CardList> CardListList;
+
+typedef std::map<Card, CardList, Value_Less> ValueMap;
+typedef ValueMap::value_type ValuePair;
 
 #endif // CARD_COMPARE_H

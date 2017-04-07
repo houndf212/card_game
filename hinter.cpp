@@ -81,12 +81,8 @@ void Hand_Hinter::process_type_Null()
 
 void Hand_Hinter::process_type_A()
 {
-    CardListList lst = Hinter_Helper::find_B_by_map(m_cmap, m_pre_hand.prime().value());
-
-    for (const CardList& l : lst)
-    {
-        m_hint_queue.push(l);
-    }
+    CardListList lst = Hinter_Helper::find_B_by_cmap(m_cmap, m_pre_hand.prime().value());
+    push_to_front(lst);
 }
 
 void Hand_Hinter::process_type_A_plus()
@@ -96,35 +92,14 @@ void Hand_Hinter::process_type_A_plus()
 
 void Hand_Hinter::process_type_AA()
 {
-    CardListList lst[3]; // 0-2,1-3,2-4
-    for (const Hand_Helper::ValuePair& p : m_cmap)
-    {
-        if (p.first.value() > m_pre_hand.prime().value()
-                && p.second.size()>=2)
-        {
-            CardList l;
-            l.push_back(p.second.at(0));
-            l.push_back(p.second.at(1));
-            size_t size = p.second.size();
-            Q_ASSERT(2<=size && size<=4);
-            lst[size-2].push_back(l);
-        }
-    }
+    CardListList lst = Hinter_Helper::find_BB_by_cmap(m_cmap, m_pre_hand.prime().value());
 
     //take out double Joker
-    if (lst[0].back().front().value() == Card::V_joker)
+    if (lst.back().front().value() == Card::V_joker)
     {
-        lst[0].pop_back();
+        lst.pop_back();
     }
-
-    for (const CardListList& l : lst)
-    {
-        for (const CardList& kl : l)
-        {
-            m_hint_queue.push(kl);
-        }
-    }
-
+    push_to_front(lst);
 }
 
 void Hand_Hinter::process_type_AA_plus()
@@ -151,7 +126,7 @@ void Hand_Hinter::process_type_AAAABC()
 {
     // first find AAAA;
     CardListList lst;
-    for (const Hand_Helper::ValuePair& p : m_cmap)
+    for (const ValuePair& p : m_cmap)
     {
         if (p.first.value() > m_pre_hand.prime().value()
                 && p.second.size() == 4)
@@ -163,7 +138,7 @@ void Hand_Hinter::process_type_AAAABC()
     //second find BC
     for (CardListList::const_iterator it=lst.begin(); it!=lst.end(); ++it)
     {
-        CardList all = Hinter_Helper::remove_list(m_cards, *it);
+        ValueMap left = Hinter_Helper::remove_map(m_cmap, *it);
     }
 
 }
@@ -171,6 +146,14 @@ void Hand_Hinter::process_type_AAAABC()
 void Hand_Hinter::process_type_AAAABBCC()
 {
 
+}
+
+void Hand_Hinter::push_to_front(const CardListList &lst)
+{
+    for (const CardList& l : lst)
+    {
+        m_hint_queue.push(l);
+    }
 }
 
 void Hand_Hinter::add_bomb_to_end()
