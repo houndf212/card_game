@@ -2,7 +2,6 @@
 #define ITEM_RECT_H
 #include <QtCore>
 #include <QGraphicsScene>
-#include <set>
 #include "card_item.h"
 
 class Item_Rect
@@ -16,7 +15,7 @@ public:
     bool add(const Card& c, Card_Item* item);
     Card_Item* remove(const Card& c);
 
-    std::set<Card> get_cards() const;
+    CardList get_cards() const;
 private:
     void reset_pos(bool is_animate);
 private:

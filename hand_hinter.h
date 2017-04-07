@@ -1,24 +1,39 @@
 #ifndef HAND_HINTER_H
 #define HAND_HINTER_H
+#include <queue>
 #include "hand_info.h"
 #include "hand_helper.h"
 
 //由于提示类有点复杂，这里采用分不同类型处理
 class Hand_Hinter
 {
-protected:
-    Hand_Hinter() {}
 public:
-    virtual ~Hand_Hinter() {}
-public:
-    void set_hand(const std::set<Card>& cards, const Hand_Info& pre_hand);
-    virtual Hand_Info next_hint() = 0;
-protected:
-    virtual process_data() = 0;
-protected:
-    std::set<Card> m_cards;
-    Hand_Helper::CountMap m_countMap;
+    int size() { return m_hint_queue.size(); }
+    CardList next_hint();
+    void set_hand(const CardList& cards, const CardList& pre_hand);
+private:
+    void process_type_Null();
+    void process_type_A();
+    void process_type_A_plus();
+
+    void process_type_AA();
+    void process_type_AA_plus();
+
+    void process_type_AAA();
+    void process_type_AAAB();
+    void process_type_AAABB();
+
+    void process_type_AAAABC();
+    void process_type_AAAABBCC();
+
+    void add_bomb_to_end();
+private:
+
+private:
+    CardList m_cards;
+    Hand_Helper::ValueMap m_cmap;
     Hand_Info m_pre_hand;
+    std::queue<CardList> m_hint_queue;
 };
 
 #endif // HAND_HINTER_H

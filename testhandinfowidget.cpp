@@ -17,7 +17,7 @@ TestHandInfoWidget::TestHandInfoWidget(QWidget *parent)
 
 void TestHandInfoWidget::onSelected()
 {
-    std::set<Card> s = m_chooser->selected_cards();
+    CardList s = m_chooser->selected_cards();
     Hand_Info info;
     info.set_cards(s);
     m_handinfo->display_info(info);

@@ -1,6 +1,8 @@
 #ifndef CARD_H
 #define CARD_H
 #include <QtCore>
+#include <set>
+#include <vector>
 
 class Card
 {
@@ -64,6 +66,10 @@ private:
     Card::Color m_color;
     Card::Value m_value;
 };
+
+typedef std::set<Card> CardSet;
+typedef std::vector<Card> CardList;
+typedef std::vector<CardList> CardListList;
 
 QDebug operator<<(QDebug os, const Card& card);
 #include "card_compare.h"

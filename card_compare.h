@@ -26,4 +26,13 @@ public:
     }
 };
 
+struct Value_Equal : public std::binary_function<Card, Card, bool>
+{
+public:
+    bool operator()(const Card& c1, const Card& c2) const
+    {
+        return c1.value() == c2.value();
+    }
+};
+
 #endif // CARD_COMPARE_H

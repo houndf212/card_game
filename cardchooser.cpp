@@ -19,7 +19,7 @@ CardChooser::CardChooser(QWidget *parent)
     init_card();
 }
 
-std::set<Card> CardChooser::selected_cards() const
+CardList CardChooser::selected_cards() const
 {
     return m_selected_rect.get_cards();
 }
@@ -78,7 +78,7 @@ void CardChooser::init_to_all_item()
 
 void CardChooser::clean_seleceted()
 {
-    for (auto c : selected_cards())
+    for (Card c : selected_cards())
     {
         unselect(c);
     }

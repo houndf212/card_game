@@ -2,7 +2,6 @@
 #define CARDCHOOSER_H
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <set>
 #include "item_rect.h"
 #include "handinfowidget.h"
 
@@ -12,7 +11,7 @@ class CardChooser : public QGraphicsView
 public:
     CardChooser(QWidget *parent = 0);
     Q_SIGNAL void sig_slected();
-    std::set<Card> selected_cards() const;
+    CardList selected_cards() const;
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
 private:

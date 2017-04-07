@@ -14,7 +14,7 @@ Hand_Info::Hand_Info()
 
 }
 
-void Hand_Info::set_cards(const std::set<Card> &vec)
+void Hand_Info::set_cards(const CardList &vec)
 {
     if (vec.empty())
         return;
@@ -42,15 +42,14 @@ void Hand_Info::hand_size_1()
 {
     m_type = Type::A;
     m_type_size = 1;
-    m_prime = *m_cards.cbegin();
+    m_prime = m_cards.front();
     m_prime_size = 1;
 }
 
 void Hand_Info::hand_size_2()
 {
-    auto iter = m_cards.cbegin();
-    Card card1 = *iter;
-    Card card2 = *(++iter);
+    Card card1 = m_cards.front();
+    Card card2 = m_cards.back();
 
     if (card1.value() == Card::V_joker)
     {
@@ -82,17 +81,17 @@ void Hand_Info::hand_size_3_plus()
     // 总体来说 2 比较科学 而且 在 做 "提示" 功能的时候比较容易实现
     //********************************************************************
 
-    m_countMap = Hand_Helper::count_value(m_cards);
+    Hand_Helper::ValueMap cmap = Hand_Helper::count_value(m_cards);
 
     const int cards_size = m_cards.size();
-    const int count_size = m_countMap.size();
+    const int count_size = cmap.size();
 
     if (cards_size == count_size) // 全是单牌
     {
         if (cards_size >= 5) // 必须是5张以上
         {
-            Card first = *m_cards.cbegin();
-            Card end = *m_cards.crbegin();
+            Card first = m_cards.front();
+            Card end = m_cards.back();
             if (cards_size == end.value()-first.value()+1) //连续
             {
                 m_type = Type::A;
@@ -104,14 +103,14 @@ void Hand_Info::hand_size_3_plus()
         return;
     }
 
-    if (Hand_Helper::find_count_size(m_countMap, 3, false) == 0
-            && Hand_Helper::find_count_size(m_countMap, 4, false) == 0) // 最大含有count为2
+    if (Hand_Helper::find_count_size(cmap, 3, false) == 0
+            && Hand_Helper::find_count_size(cmap, 4, false) == 0) // 最大含有count为2
     {
-        Q_ASSERT(Hand_Helper::find_count_size(m_countMap, 2, false) != 0);
+        Q_ASSERT(Hand_Helper::find_count_size(cmap, 2, false) != 0);
         if (cards_size >= 6 && cards_size == 2*count_size) //全是对子，且大于3对
         {
-            Card first = *m_cards.cbegin();
-            Card end = *m_cards.crbegin();
+            Card first = m_cards.front();
+            Card end = m_cards.back();
             if (count_size == end.value()-first.value()+1) //连续
             {
                 m_type = Type::AA;
@@ -123,13 +122,13 @@ void Hand_Info::hand_size_3_plus()
         return;
     }
 
-    if (Hand_Helper::find_count_size(m_countMap, 4, false) == 1) // 含有count为4 只能是 4带2 或者4带2对，且不能叠加，所以可以先处理
+    if (Hand_Helper::find_count_size(cmap, 4, false) == 1) // 含有count为4 只能是 4带2 或者4带2对，且不能叠加，所以可以先处理
     {
         if (cards_size == 4)
         {
             m_type = Type::Bomb;
             m_type_size = 1;
-            m_prime = *m_cards.crbegin();
+            m_prime = m_cards.front();
             m_prime_size = 4;
             return;
         }
@@ -138,18 +137,18 @@ void Hand_Info::hand_size_3_plus()
         {
             m_type = Type::AAAABC;
             m_type_size = 1;
-            m_prime = *m_cards.crbegin();
+            m_prime = m_cards.front();
             m_prime_size = 4;
             return;
         }
 
         if(cards_size == 8
-                && Hand_Helper::find_count_size(m_countMap, 1, false) == 0
-                && Hand_Helper::find_count_size(m_countMap, 3, false) ==0) // 4带2对
+                && Hand_Helper::find_count_size(cmap, 1, false) == 0
+                && Hand_Helper::find_count_size(cmap, 3, false) ==0) // 4带2对
         {
             m_type = Type::AAAABBCC;
             m_type_size = 1;
-            m_prime = *m_cards.crbegin();
+            m_prime = m_cards.front();
             m_prime_size = 4;
             return;
         }
@@ -159,7 +158,7 @@ void Hand_Info::hand_size_3_plus()
 
     // else 只能是3带了
 
-    std::tie(m_type_size, m_prime) = Hand_Helper::find_max_group_by_count(m_countMap , 3, true);
+    std::tie(m_type_size, m_prime) = Hand_Helper::find_max_group_by_count(cmap , 3, true);
     if (m_type_size > 0)
     {
         if (cards_size == 3*m_type_size) //333 333444 333444555
@@ -184,7 +183,7 @@ void Hand_Info::hand_size_3_plus()
                 }
 
                 if (cards_size == 5*test
-                        && Hand_Helper::find_count_size(m_countMap, 1, false) == 0)
+                        && Hand_Helper::find_count_size(cmap, 1, false) == 0)
                 {
                     m_type = Type::AAABB;
                     m_adjust_prime_size = m_type_size - test;

@@ -22,7 +22,7 @@ bool Item_Rect::add(const Card &c, Card_Item *item)
 
 Card_Item *Item_Rect::remove(const Card &c)
 {
-    auto p = m_map.find(c);
+    std::map<Card, Card_Item*>::const_iterator p = m_map.find(c);
     if (p==m_map.cend())
         return 0;
 
@@ -32,12 +32,12 @@ Card_Item *Item_Rect::remove(const Card &c)
     return item;
 }
 
-std::set<Card> Item_Rect::get_cards() const
+CardList Item_Rect::get_cards() const
 {
-    std::set<Card> s;
-    for (auto p : m_map)
+    CardList s;
+    for (const std::map<Card, Card_Item*>::value_type& p : m_map)
     {
-        s.insert(p.first);
+        s.push_back(p.first);
     }
     return s;
 }
@@ -65,7 +65,7 @@ void Item_Rect::reset_pos(bool is_animate)
         step /= (size-1);
     QPointF start = m_line.p1();
 
-    for (auto iter=m_map.crbegin(); iter!=m_map.crend(); ++iter)
+    for (std::map<Card, Card_Item*>::const_reverse_iterator iter=m_map.crbegin(); iter!=m_map.crend(); ++iter)
     {
         Card_Item* item = iter->second;
         if (is_animate)

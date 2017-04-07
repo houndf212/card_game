@@ -1,6 +1,6 @@
 #ifndef DECK_H
 #define DECK_H
-#include <set>
+
 #include "card.h"
 
 class Deck
@@ -11,7 +11,7 @@ public:
     bool contains(const Card& card) const;
     int size() const { return m_cards.size(); }
 private:
-    std::set<Card> m_cards;
+    CardSet m_cards;
 };
 
 #endif // DECK_H

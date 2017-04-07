@@ -42,7 +42,7 @@ SOURCES += main.cpp\
     comparehandinfowidget.cpp \
     hand_hinter.cpp \
     hand_helper.cpp \
-    hand_hinter_a.cpp
+    hinter_helper.cpp
 
 HEADERS  += \
     card.h \
@@ -61,7 +61,7 @@ HEADERS  += \
     comparehandinfowidget.h \
     hand_hinter.h \
     hand_helper.h \
-    hand_hinter_a.h
+    hinter_helper.h
 
 RESOURCES += \
     res_cards.qrc

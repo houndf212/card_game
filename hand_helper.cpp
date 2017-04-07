@@ -1,12 +1,11 @@
 #include "hand_helper.h"
 
-
-Hand_Helper::CountMap Hand_Helper::count_value(const std::set<Card> &cards)
+Hand_Helper::ValueMap Hand_Helper::count_value(const CardList &cards)
 {
-    CountMap cmap;
-    for (auto c : cards)
+    ValueMap cmap;
+    for (Card c : cards)
     {
-        cmap[c]++;
+        cmap[c].push_back(c);
     }
     return cmap;
 }
@@ -26,7 +25,7 @@ Hand_Helper::CountMap Hand_Helper::count_value(const std::set<Card> &cards)
 // eg 3455677 , 1, true -> 7, 5
 // eg 33444555566, 2, true -> 6, 4
 // eg 33444555566, 3, true -> 5, 2
-std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::CountMap &cmap, int count, bool can_over_flow)
+std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::ValueMap &cmap, size_t count, bool can_over_flow)
 {
     std::map<int, Card> c_map;
 
@@ -35,9 +34,9 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::Cou
 
     c_map[c_size] = val;
 
-    for (auto p : cmap)
+    for (const ValuePair& p : cmap)
     {
-        if (p.second == count || (can_over_flow && p.second > count))
+        if (p.second.size() == count || (can_over_flow && p.second.size() > count))
         {
             //3334455566677788 == 3567
             if (val.value()+1 == p.first.value()) // none+1 = v_3
@@ -58,13 +57,35 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const Hand_Helper::Cou
     return *c_map.crbegin();
 }
 
-int Hand_Helper::find_count_size(const Hand_Helper::CountMap &cmap, int count, bool can_over_flow)
+int Hand_Helper::find_count_size(const Hand_Helper::ValueMap &cmap, size_t count, bool can_over_flow)
 {
     int size = 0;
-    for (auto p : cmap)
+    for (const ValuePair& p : cmap)
     {
-        if (p.second == count || (can_over_flow && p.second > count))
+        if (p.second.size() == count || (can_over_flow && p.second.size() > count))
             ++size;
     }
     return size;
 }
+
+CardListList Hand_Helper::find_all_bomb(const Hand_Helper::ValueMap &cmap, Card::Value floor)
+{
+    CardListList lst;
+    for (const ValuePair& p : cmap)
+    {
+        if (p.first.value() > floor && p.second.size() == 4)
+        {
+            lst.push_back(p.second);
+        }
+    }
+
+    Card bjoker(Card::black_joker, Card::V_joker);
+    ValueMap::const_iterator it = cmap.find(bjoker);
+    if (it!=cmap.cend() && it->second.size() == 2)
+    {
+        lst.push_back(it->second);
+    }
+    return lst;
+}
+
+

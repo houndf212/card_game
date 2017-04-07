@@ -2,7 +2,6 @@
 #define HANDINFOWIDGET_H
 
 #include <QtWidgets>
-#include <set>
 #include "card.h"
 #include "hand_info.h"
 

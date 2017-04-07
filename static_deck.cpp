@@ -66,7 +66,7 @@ Card Static_Deck::index_card(int index)
 
 int Static_Deck::card_index(const Card &card)
 {
-    auto p = CARD_INDEX.find(card);
+    CardIndex::const_iterator p = CARD_INDEX.find(card);
     Q_ASSERT(p != CARD_INDEX.cend());
     return p->second;
 }

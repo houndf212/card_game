@@ -16,7 +16,7 @@ QString Static_CardImage::get_file_name(const Card &c)
 
 void Static_CardImage::scale_image()
 {
-    for (auto& p : m_map)
+    for (Map::value_type& p : m_map)
     {
         const QPixmap& pix = p.second;
         p.second = pix.scaled(pix.size()/5, Qt::KeepAspectRatioByExpanding	, Qt::SmoothTransformation);
@@ -25,7 +25,7 @@ void Static_CardImage::scale_image()
 
 void Static_CardImage::init_image()
 {
-    for (auto c : Static_Deck::get_init())
+    for (Card c : Static_Deck::get_init())
     {
         QString filestr = get_file_name(c);
         QPixmap pix(filestr);
@@ -46,7 +46,7 @@ QSize Static_CardImage::image_size()
 
 QPixmap Static_CardImage::get_image(const Card &c)
 {
-    auto p = m_map.find(c);
+    Map::const_iterator p = m_map.find(c);
     Q_ASSERT(p!=m_map.cend());
     return p->second;
 }

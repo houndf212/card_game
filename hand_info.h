@@ -15,18 +15,18 @@ public:
         AAA,        //333 （1+）
         AAAB,       //3337（1+）
         AAABB,      //3338 (1+)
-        AAAABC,     //33333jk (1+) or 333344(1+)
-        AAAABBCC,   //333337799 (1+) or 33334444
-        Bomb,         //two joker 必定是black_joker+red_joker
+        AAAABC,     //33333jk  or 333344
+        AAAABBCC,   //333337799 or 33334444
+        Bomb,       //3333 or double joker
     };
     Q_ENUM(Type)
 
 public:
     Hand_Info();
-    void set_cards(const std::set<Card> &vec);
+    void set_cards(const CardList &vec);
 
     bool isValid() const { return m_type != Type::Invalid; }
-    int size() const { return m_cards.size(); }
+    size_t size() const { return m_cards.size(); }
     Type type() const { return m_type; }
     int type_size() const { return m_type_size; }
     Card prime() const { return m_prime; }
@@ -42,8 +42,7 @@ private:
     Card m_prime;               // 主元素值
     int m_prime_size;           // 主元素长度
     int m_adjust_prime_size;              // 是否调整过prime_size
-    std::set<Card> m_cards;
-    Hand_Helper::CountMap m_countMap;
+    CardList m_cards;
 };
 
 bool hand_less(const Hand_Info& info1, const Hand_Info& info2);
