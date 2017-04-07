@@ -81,8 +81,15 @@ void Hand_Hinter::process_type_Null()
 
 void Hand_Hinter::process_type_A()
 {
-    CardListList lst = Hinter_Helper::find_B_by_cmap(m_cmap, m_pre_hand.prime().value());
-    push_to_front(lst);
+    CardList lst = Hinter_Helper::find_B_by_cmap(m_cmap, m_pre_hand.prime().value());
+    CardListList llst;
+    for (const Card& c : lst)
+    {
+        CardList l;
+        l.push_back(c);
+        llst.push_back(l);
+    }
+    push_to_front(llst);
 }
 
 void Hand_Hinter::process_type_A_plus()
@@ -138,7 +145,8 @@ void Hand_Hinter::process_type_AAAABC()
     //second find BC
     for (CardListList::const_iterator it=lst.begin(); it!=lst.end(); ++it)
     {
-        ValueMap left = Hinter_Helper::remove_map(m_cmap, *it);
+        ValueMap left = m_cmap;
+        Hinter_Helper::remove_map(left, *it);
     }
 
 }

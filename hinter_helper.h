@@ -5,17 +5,13 @@
 
 namespace Hinter_Helper
 {
-ValueMap remove_map(const ValueMap& cmap, const CardList& lst);
-CardList remove_list(const CardList& source, const CardList& m);
-CardList remove(const CardList& source, const Card &card);
+void remove_map(ValueMap &cmap, const CardList& lst);
+void remove_list(CardList& target, const CardList& m);
 
-CardListList find_B_by_cmap(const ValueMap& cmap, Card::Value floor);
-CardListList find_B(const CardList& cards);
-
+CardList find_B_by_cmap(const ValueMap& cmap, Card::Value floor);
 CardListList find_BB_by_cmap(const ValueMap& cmap, Card::Value floor);
-CardListList find_BB(const CardList& cards);
-CardListList find_BC(const CardList& cards);
-CardListList find_BBCC(const CardList& cards);
+CardListList find_BC_by_cmap(const ValueMap& cmap, Card::Value floor);
+CardListList find_BBCC_by_cmap(const ValueMap& cmap, Card::Value floor);
 }
 
 #endif // HINTER_HELPER_H
