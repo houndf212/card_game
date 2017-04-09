@@ -3,6 +3,7 @@
 
 #include <set>
 #include <vector>
+#include <list>
 #include <map>
 #include "card.h"
 
@@ -51,8 +52,10 @@ public:
 };
 
 typedef std::set<Card> CardSet;
-typedef std::vector<Card> CardList;
-typedef std::vector<CardList> CardListList;
+//typedef std::vector<Card> CardList;
+//typedef std::vector<CardList> CardListList;
+typedef std::list<Card> CardList;
+typedef std::list<CardList> CardListList;
 
 typedef std::map<Card, CardList, Value_Less> ValueMap;
 typedef ValueMap::value_type ValuePair;

@@ -18,7 +18,9 @@ void Hinter_Helper::remove_list(CardList &target, const CardList &m)
     CardList::const_iterator start = std::find_first_of(target.cbegin(), target.cend(),
                                                         m.cbegin(), m.cend(),
                                                         std::less<Card>());
-    target.erase(start + m.size());
+    CardList::const_iterator end = start;
+    std::advance(end, m.size());
+    target.erase(start, end);
 }
 
 
@@ -56,8 +58,9 @@ CardListList Hinter_Helper::find_BB_by_cmap(const ValueMap &cmap, Card::Value fl
                 && p.second.size()>=2)
         {
             CardList l;
-            l.push_back(p.second.at(0));
-            l.push_back(p.second.at(1));
+            CardList::const_iterator it = p.second.cbegin();
+            l.push_back(*it++);
+            l.push_back(*it);
             lst[p.second.size()-2].push_back(l);
         }
     }
