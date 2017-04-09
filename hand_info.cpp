@@ -19,6 +19,7 @@ void Hand_Info::set_cards(const CardList &vec)
     if (vec.empty())
         return;
 
+    Q_ASSERT(std::is_sorted(vec.begin(), vec.end(), std::less<Card>()));
     m_cards = vec;
 
     //first set invalid

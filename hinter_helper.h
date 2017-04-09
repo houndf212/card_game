@@ -10,7 +10,8 @@ void remove_list(CardList& target, const CardList& m);
 
 CardList find_B_by_cmap(const ValueMap& cmap, Card::Value floor);
 CardListList find_BB_by_cmap(const ValueMap& cmap, Card::Value floor);
-CardListList find_BC_by_cmap(const ValueMap& cmap, Card::Value floor);
+CardListList find_BC_by_cmap(const ValueMap& cmap);
+bool is_same_BC(const CardList& l1, const CardList& l2);
 CardListList find_BBCC_by_cmap(const ValueMap& cmap, Card::Value floor);
 }
 

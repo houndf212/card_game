@@ -5,10 +5,13 @@
 
 void Hinter_Helper::remove_map(ValueMap &cmap, const CardList &lst)
 {
+    Q_ASSERT(lst.front().value() == lst.back().value());
     ValueMap::iterator it = cmap.find(lst.front());
     Q_ASSERT(it!=cmap.end());
     CardList& target = it->second;
     remove_list(target, lst);
+    if (target.empty())
+        cmap.erase(it);
 }
 
 void Hinter_Helper::remove_list(CardList &target, const CardList &m)
@@ -80,4 +83,38 @@ CardListList Hinter_Helper::find_BB_by_cmap(const ValueMap &cmap, Card::Value fl
         }
     }
     return ret;
+}
+
+CardListList Hinter_Helper::find_BC_by_cmap(const ValueMap &cmap)
+{
+    CardListList ret;
+    CardList list1 = find_B_by_cmap(cmap, Card::V_none);
+    for (const Card& c1 : list1)
+    {
+        ValueMap m = cmap;
+        CardList l;
+        l.push_back(c1);
+        remove_map(m, l);
+        CardList list2 = find_B_by_cmap(m, Card::V_none);
+        for (const Card& c2 : list2)
+        {
+            CardList bc;
+            std::pair<Card, Card> p = std::minmax(c1, c2, std::less<Card>());
+            bc.push_back(p.first);
+            bc.push_back(p.second);
+            ret.push_back(bc);
+        }
+    }
+
+    // remove duplicate
+    ret.resize(std::distance(ret.begin(), std::unique(ret.begin(), ret.end(), &is_same_BC)));
+    return ret;
+}
+
+bool Hinter_Helper::is_same_BC(const CardList &l1, const CardList &l2)
+{
+    Q_ASSERT(l1.size() == 2);
+    Q_ASSERT(l2.size() == 2);
+    std::less<Card> cmp;
+    return cmp(l1.front(), l2.front()) && cmp(l1.back(), l2.back());
 }

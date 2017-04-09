@@ -142,12 +142,28 @@ void Hand_Hinter::process_type_AAAABC()
         }
     }
 
+    if (lst.empty()) // no AAAA
+        return ;
+
+    CardListList a42;
     //second find BC
-    for (CardListList::const_iterator it=lst.begin(); it!=lst.end(); ++it)
+    for (const CardList& a4 : lst)
     {
         ValueMap left = m_cmap;
-        Hinter_Helper::remove_map(left, *it);
+        Hinter_Helper::remove_map(left, a4);
+        CardListList all_bc = Hinter_Helper::find_BC_by_cmap(left);
+
+        for (const CardList& bc : all_bc)
+        {
+            Q_ASSERT(bc.size() == 2);
+            CardList l = a4;
+            std::pair<Card, Card> p = std::minmax(bc.front(), bc.back(), std::less<Card>());
+            l.push_back(p.first);
+            l.push_back(p.second);
+            a42.push_back(l);
+        }
     }
+    push_to_front(a42);
 
 }
 
