@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     static_cardimage.cpp \
     deck.cpp \
     card_item.cpp \
-    deck_rect.cpp \
     item_rect.cpp \
     cardchooser.cpp \
     handinfowidget.cpp \
@@ -53,7 +52,6 @@ HEADERS  += \
     card_item.h \
     pch.h \
     hand_info.h \
-    deck_rect.h \
     item_rect.h \
     cardchooser.h \
     handinfowidget.h \

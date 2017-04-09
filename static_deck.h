@@ -1,7 +1,6 @@
 #ifndef STATIC_DECK_H
 #define STATIC_DECK_H
 #include <array>
-#include <map>
 #include "card.h"
 
 class Static_Deck
