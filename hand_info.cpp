@@ -19,7 +19,7 @@ void Hand_Info::set_cards(const CardList &vec)
     if (vec.empty())
         return;
 
-    Q_ASSERT(std::is_sorted(vec.begin(), vec.end(), std::less<Card>()));
+    Q_ASSERT(std::is_sorted(vec.begin(), vec.end()));
     m_cards = vec;
 
     //first set invalid
@@ -64,7 +64,7 @@ void Hand_Info::hand_size_2()
     {
         m_type = Type::AA;
         m_type_size = 1;
-        m_prime = std::max(card1, card2, std::less<Card>());
+        m_prime = std::max(card1, card2);
         m_prime_size = 2;
     }
 }

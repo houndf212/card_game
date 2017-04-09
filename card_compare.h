@@ -13,25 +13,34 @@ bool order_less(const Card& c1, const Card& c2);
 bool order_equal(const Card& c1, const Card& c2);
 }
 
-namespace std {
-template<>
-struct less<Card>
+inline bool operator<(const Card& c1, const Card& c2)
 {
-    bool operator()(const Card& c1, const Card& c2) const
-    {
-        return Card_Compare::order_less(c1, c2);
-    }
-};
-
-template<>
-struct equal_to<Card>
-{
-    bool operator()(const Card& c1, const Card& c2) const
-    {
-        return Card_Compare::order_equal(c1, c2);
-    }
-};
+    return Card_Compare::order_less(c1, c2);
 }
+inline bool operator==(const Card& c1, const Card& c2)
+{
+    return Card_Compare::order_equal(c1, c2);
+}
+
+//namespace std {
+//template<>
+//struct less<Card>
+//{
+//    bool operator()(const Card& c1, const Card& c2) const
+//    {
+//        return Card_Compare::order_less(c1, c2);
+//    }
+//};
+
+//template<>
+//struct equal_to<Card>
+//{
+//    bool operator()(const Card& c1, const Card& c2) const
+//    {
+//        return Card_Compare::order_equal(c1, c2);
+//    }
+//};
+//}
 
 struct Value_Less
 {

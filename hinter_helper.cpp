@@ -16,11 +16,10 @@ void Hinter_Helper::remove_map(ValueMap &cmap, const CardList &lst)
 
 void Hinter_Helper::remove_list(CardList &target, const CardList &m)
 {
-    Q_ASSERT(std::is_sorted(target.cbegin(), target.cend(), std::less<Card>()));
-    Q_ASSERT(std::is_sorted(m.cbegin(), m.cend(), std::less<Card>()));
+    Q_ASSERT(std::is_sorted(target.cbegin(), target.cend()));
+    Q_ASSERT(std::is_sorted(m.cbegin(), m.cend()));
     CardList::const_iterator start = std::find_first_of(target.cbegin(), target.cend(),
-                                                        m.cbegin(), m.cend(),
-                                                        std::less<Card>());
+                                                        m.cbegin(), m.cend());
     CardList::const_iterator end = start;
     std::advance(end, m.size());
     target.erase(start, end);
@@ -99,7 +98,7 @@ CardListList Hinter_Helper::find_BC_by_cmap(const ValueMap &cmap)
         for (const Card& c2 : list2)
         {
             CardList bc;
-            std::pair<Card, Card> p = std::minmax(c1, c2, std::less<Card>());
+            std::pair<Card, Card> p = std::minmax(c1, c2);
             bc.push_back(p.first);
             bc.push_back(p.second);
             ret.push_back(bc);
@@ -115,6 +114,5 @@ bool Hinter_Helper::is_same_BC(const CardList &l1, const CardList &l2)
 {
     Q_ASSERT(l1.size() == 2);
     Q_ASSERT(l2.size() == 2);
-    std::less<Card> cmp;
-    return cmp(l1.front(), l2.front()) && cmp(l1.back(), l2.back());
+    return l1.front() < l2.front() && l1.back() < l2.back();
 }

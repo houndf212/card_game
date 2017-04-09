@@ -157,7 +157,7 @@ void Hand_Hinter::process_type_AAAABC()
         {
             Q_ASSERT(bc.size() == 2);
             CardList l = a4;
-            std::pair<Card, Card> p = std::minmax(bc.front(), bc.back(), std::less<Card>());
+            std::pair<Card, Card> p = std::minmax(bc.front(), bc.back());
             l.push_back(p.first);
             l.push_back(p.second);
             a42.push_back(l);

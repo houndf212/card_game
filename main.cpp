@@ -31,7 +31,7 @@ void test_hinter()
 
     all.push_back({Card::black_joker, Card::V_joker});
     all.push_back({Card::red_joker, Card::V_joker});
-    std::sort(all.begin(), all.end(), std::less<Card>());
+    std::sort(all.begin(), all.end());
 
     CardList pre_hand;
     pre_hand.push_back({Card::diamond, Card::V_3});
@@ -41,7 +41,7 @@ void test_hinter()
 
     pre_hand.push_back({Card::heart, Card::V_10});
     pre_hand.push_back({Card::club, Card::V_10});
-    std::sort(pre_hand.begin(), pre_hand.end(), std::less<Card>());
+    std::sort(pre_hand.begin(), pre_hand.end());
     Hand_Hinter hinter;
     hinter.set_hand(all, pre_hand);
 
