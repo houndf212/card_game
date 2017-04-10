@@ -8,10 +8,9 @@
 void test_hinter()
 {
     CardList all;
-    all.push_back({Card::diamond, Card::V_2});
-    all.push_back({Card::heart, Card::V_2});
 
     all.push_back({Card::diamond, Card::V_3});
+    all.push_back({Card::heart, Card::V_3});
 
     all.push_back({Card::diamond, Card::V_4});
     all.push_back({Card::spade, Card::V_4});
@@ -24,10 +23,35 @@ void test_hinter()
     all.push_back({Card::club, Card::V_5});
 
     all.push_back({Card::diamond, Card::V_6});
+    all.push_back({Card::spade, Card::V_6});
+
     all.push_back({Card::diamond, Card::V_7});
     all.push_back({Card::heart, Card::V_7});
 
     all.push_back({Card::diamond, Card::V_8});
+
+    all.push_back({Card::diamond, Card::V_9});
+
+    all.push_back({Card::heart, Card::V_10});
+    all.push_back({Card::club, Card::V_10});
+    all.push_back({Card::spade, Card::V_10});
+
+    all.push_back({Card::heart, Card::V_jack});
+    all.push_back({Card::spade, Card::V_jack});
+    all.push_back({Card::club, Card::V_jack});
+    all.push_back({Card::diamond, Card::V_jack});
+
+    all.push_back({Card::heart, Card::V_queen});
+    all.push_back({Card::spade, Card::V_queen});
+    all.push_back({Card::club, Card::V_queen});
+
+    all.push_back({Card::heart, Card::V_king});
+    all.push_back({Card::spade, Card::V_king});
+
+    all.push_back({Card::heart, Card::V_ace});
+
+    all.push_back({Card::diamond, Card::V_2});
+    all.push_back({Card::heart, Card::V_2});
 
     all.push_back({Card::black_joker, Card::V_joker});
     all.push_back({Card::red_joker, Card::V_joker});
@@ -35,12 +59,15 @@ void test_hinter()
 
     CardList pre_hand;
     pre_hand.push_back({Card::diamond, Card::V_3});
-    pre_hand.push_back({Card::spade, Card::V_3});
     pre_hand.push_back({Card::heart, Card::V_3});
-    pre_hand.push_back({Card::club, Card::V_3});
+    pre_hand.push_back({Card::spade, Card::V_3});
+    pre_hand.push_back({Card::diamond, Card::V_4});
+    pre_hand.push_back({Card::heart, Card::V_4});
+    pre_hand.push_back({Card::spade, Card::V_4});
+//    pre_hand.push_back({Card::diamond, Card::V_5});
+//    pre_hand.push_back({Card::heart, Card::V_5});
 
-    pre_hand.push_back({Card::heart, Card::V_10});
-    pre_hand.push_back({Card::club, Card::V_10});
+
     std::sort(pre_hand.begin(), pre_hand.end());
     Hand_Hinter hinter;
     hinter.set_hand(all, pre_hand);
@@ -64,7 +91,7 @@ int main(int argc, char *argv[])
     CompareHandInfoWidget w;
     w.show();
 
-//    return 0;
+    return 0;
 
     return a.exec();
 }

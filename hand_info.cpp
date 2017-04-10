@@ -93,7 +93,7 @@ void Hand_Info::hand_size_3_plus()
         {
             Card first = m_cards.front();
             Card end = m_cards.back();
-            if (cards_size == end.value()-first.value()+1) //连续
+            if (cards_size == Card::distance(first.value(), end.value())+1) //连续
             {
                 m_type = Type::A;
                 m_type_size = cards_size;

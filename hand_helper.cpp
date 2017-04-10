@@ -32,6 +32,9 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const ValueMap &cmap, 
     Card val(Card::C_none, Card::V_none);
     int c_size = 0;
 
+    static_assert(Card::V_none+1==Card::V_3);
+    static_assert(Card::V_ace+1!=Card::V_2);
+
     c_map[c_size] = val;
 
     for (const ValuePair& p : cmap)
@@ -39,7 +42,7 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const ValueMap &cmap, 
         if (p.second.size() == count || (can_over_flow && p.second.size() > count))
         {
             //3334455566677788 == 3567
-            if (val.value()+1 == p.first.value()) // none+1 = v_3
+            if (Card::is_next(val.value(), p.first.value())) // none+1 = v_3
             {
                 val = p.first;
                 ++c_size;

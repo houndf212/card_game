@@ -37,6 +37,14 @@ public:
         V_joker = V_2+2,
     };
     Q_ENUM(Value)
+    static bool is_next(Value v1, Value v2)
+    {
+        return v1+1==v2;
+    }
+    static int distance(Value v1, Value v2)
+    {
+        return v2 - v1;
+    }
 public:
     Card(Card::Color color = Card::C_none,
          Card::Value value = Card::V_none)

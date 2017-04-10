@@ -20,11 +20,15 @@ private:
     void process_type_AA_plus();
 
     void process_type_AAA();
+    void process_type_AAA_plus();
     void process_type_AAAB();
     void process_type_AAABB();
 
     void process_type_AAAABC();
     void process_type_AAAABBCC();
+
+    //==================
+    void process_type_A_AA_AAA_plus();
 
     void push_to_front(const CardListList& lst);
     void add_bomb_to_end();

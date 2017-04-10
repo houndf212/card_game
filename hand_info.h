@@ -28,7 +28,7 @@ public:
     bool isValid() const { return m_type != Type::Invalid; }
     size_t size() const { return m_cards.size(); }
     Type type() const { return m_type; }
-    int type_size() const { return m_type_size; }
+    size_t type_size() const { return m_type_size; }
     Card prime() const { return m_prime; }
     int prime_size() const { return m_prime_size; }
     bool adjust_size() const { return m_adjust_prime_size; }
