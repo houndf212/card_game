@@ -32,8 +32,8 @@ std::pair<int, Card> Hand_Helper::find_max_group_by_count(const ValueMap &cmap, 
     Card val(Card::C_none, Card::V_none);
     int c_size = 0;
 
-    static_assert(Card::V_none+1==Card::V_3);
-    static_assert(Card::V_ace+1!=Card::V_2);
+    static_assert(Card::V_none+1==Card::V_3, "");
+    static_assert(Card::V_ace+1!=Card::V_2, "");
 
     c_map[c_size] = val;
 
