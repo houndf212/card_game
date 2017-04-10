@@ -55,7 +55,7 @@ void test_hinter()
 
     all.push_back({Card::black_joker, Card::V_joker});
     all.push_back({Card::red_joker, Card::V_joker});
-    std::sort(all.begin(), all.end());
+    sort(all);
 
     CardList pre_hand;
     pre_hand.push_back({Card::diamond, Card::V_3});
@@ -68,7 +68,7 @@ void test_hinter()
 //    pre_hand.push_back({Card::heart, Card::V_5});
 
 
-    std::sort(pre_hand.begin(), pre_hand.end());
+    sort(pre_hand);
     Hand_Hinter hinter;
     hinter.set_hand(all, pre_hand);
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     CompareHandInfoWidget w;
     w.show();
 
-    return 0;
+//    return 0;
 
     return a.exec();
 }

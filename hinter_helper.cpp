@@ -146,7 +146,7 @@ CardListList Hinter_Helper::find_BBCC_by_cmap(const ValueMap &cmap)
         {
             CardList bbcc = bb;
             push_back(bbcc, cc);
-            std::sort(bbcc.begin(), bbcc.end());
+            sort(bbcc);
             ret.push_back(bbcc);
         }
     }

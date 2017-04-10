@@ -63,8 +63,18 @@ public:
 typedef std::set<Card> CardSet;
 typedef std::vector<Card> CardList;
 typedef std::vector<CardList> CardListList;
+
+inline void sort(CardList &lst)
+{
+    std::sort(lst.begin(), lst.end());
+}
+
 //typedef std::list<Card> CardList;
 //typedef std::list<CardList> CardListList;
+//inline void sort(CardList& lst)
+//{
+//    lst.sort();
+//}
 
 typedef std::map<Card, CardList, Value_Less> ValueMap;
 typedef ValueMap::value_type ValuePair;

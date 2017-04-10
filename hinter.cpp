@@ -204,7 +204,7 @@ void Hand_Hinter::process_type_AAAABC()
             Q_ASSERT(bc.size() == 2);
             CardList l = a4;
             Hinter_Helper::push_back(l, bc);
-            std::sort(l.begin(), l.end());
+            sort(l);
             a42.push_back(l);
         }
     }
@@ -229,7 +229,7 @@ void Hand_Hinter::process_type_AAAABBCC()
         {
             CardList l = a4;
             Hinter_Helper::push_back(l, bbcc);
-            std::sort(l.begin(), l.end());
+            sort(l);
             a422.push_back(l);
         }
     }
