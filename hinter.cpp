@@ -131,26 +131,11 @@ void Hand_Hinter::process_type_AA_plus()
 
 void Hand_Hinter::process_type_A_AA_AAA_plus()
 {
-    CardListList ret;
     size_t type_size = m_pre_hand.type_size();
     size_t prime_size = m_pre_hand.prime_size();
     Card::Value min_prime = static_cast<Card::Value>(m_pre_hand.prime().value()-type_size+1);
-    CardListList groups = Hinter_Helper::slice_to_group(m_cmap, min_prime, prime_size);
-    for (const CardList& lst : groups)
-    {
-        if (lst.size() < type_size*prime_size) continue;
-
-        CardList::const_iterator beg = lst.cbegin();
-        CardList::const_iterator end = beg;
-        std::advance(end, type_size*prime_size);
-        for (; end!=lst.cend();
-             std::advance(beg, prime_size), std::advance(end, prime_size))
-        {
-            ret.push_back(CardList(beg, end));
-        }
-        ret.push_back(CardList(beg, end));
-    }
-    push_to_front(ret);
+    CardListList groups = Hinter_Helper::slice_to_group(m_cmap, min_prime, type_size, prime_size);
+    push_to_front(groups);
 }
 
 void Hand_Hinter::process_type_AAA()
@@ -167,24 +152,8 @@ void Hand_Hinter::process_type_AAAB()
 {
     size_t type_size = m_pre_hand.type_size();
     Card::Value min_prime = static_cast<Card::Value>(m_pre_hand.prime().value()-type_size+1);
-    CardListList groups = Hinter_Helper::slice_to_group(m_cmap, min_prime, 3);
-
     //first AAA
-    CardListList a3s;
-    for (const CardList& lst : groups)
-    {
-        if (lst.size() < type_size*3) continue;
-
-        CardList::const_iterator beg = lst.cbegin();
-        CardList::const_iterator end = beg;
-        std::advance(end, type_size*3);
-        for (; end!=lst.cend();
-             std::advance(beg, 3), std::advance(end, 3))
-        {
-            a3s.push_back(CardList(beg, end));
-        }
-        a3s.push_back(CardList(beg, end));
-    }
+    CardListList a3s = Hinter_Helper::slice_to_group(m_cmap, min_prime, type_size, 3);
 
     CardListList ret;
     // second find type_size B
@@ -226,24 +195,8 @@ void Hand_Hinter::process_type_AAABB()
 {
     size_t type_size = m_pre_hand.type_size();
     Card::Value min_prime = static_cast<Card::Value>(m_pre_hand.prime().value()-type_size+1);
-    CardListList groups = Hinter_Helper::slice_to_group(m_cmap, min_prime, 3);
-
     //first AAA
-    CardListList a3s;
-    for (const CardList& lst : groups)
-    {
-        if (lst.size() < type_size*3) continue;
-
-        CardList::const_iterator beg = lst.cbegin();
-        CardList::const_iterator end = beg;
-        std::advance(end, type_size*3);
-        for (; end!=lst.cend();
-             std::advance(beg, 3), std::advance(end, 3))
-        {
-            a3s.push_back(CardList(beg, end));
-        }
-        a3s.push_back(CardList(beg, end));
-    }
+    CardListList a3s = Hinter_Helper::slice_to_group(m_cmap, min_prime, type_size, 3);
 
     CardListList ret;
     // second find type_size B

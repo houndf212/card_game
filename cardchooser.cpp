@@ -11,7 +11,7 @@ CardChooser::CardChooser(QWidget *parent)
     ,m_club_rect({10, 320, 600, 320}, m_scene)
     ,m_diamond_rect({10, 475, 600, 475}, m_scene)
     ,m_joker_rect({720, 200, 720, 400}, m_scene)
-    ,m_selected_rect({10, 630, 700, 630}, m_scene)
+    ,m_selected_rect({10, 650, 700, 650}, m_scene)
 {
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
     this->setScene(m_scene);
@@ -27,10 +27,12 @@ CardList CardChooser::selected_cards() const
 void CardChooser::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
-    { clean_seleceted(); }
-    else if (event->button() == Qt::MidButton)
     {
         show_hint();
+    }
+    else if (event->button() == Qt::MidButton)
+    {
+        clean_seleceted();
     }
     QGraphicsView::mousePressEvent(event);
 }
@@ -92,7 +94,6 @@ void CardChooser::clean_seleceted()
 void CardChooser::show_hint()
 {
     CardList lst = m_hinter.next_hint();
-    qDebug() << lst;
     m_selected_rect.hint(lst);
 }
 

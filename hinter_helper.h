@@ -29,8 +29,9 @@ CardListList find_AAA_by_cmap(const ValueMap& cmap, Card::Value floor);
 
 CardListList find_AAAA_by_cmap(const ValueMap& cmap, Card::Value floor);
 
-ValueMap get_map_greater_value_size(const ValueMap& cmap, Card::Value val, size_t size);
-CardListList slice_to_group(const ValueMap& cmap, Card::Value val, size_t size);
+ValueMap get_map_greater_value_size(const ValueMap& cmap, Card::Value val, size_t prime_size);
+CardListList slice_to_group(const ValueMap& cmap, Card::Value val,size_t type_size, size_t prime_size);
+CardListList find_group(const CardListList& groups, size_t type_size, size_t prime_size);
 bool is_bomb_list(const ValueMap& cmap, const CardList& lst);
 }
 

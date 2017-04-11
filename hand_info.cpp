@@ -222,7 +222,6 @@ bool hand_less(const Hand_Info &info1, const Hand_Info &info2)
             // 双王的时候 value 一样
             if (info1.prime_size()==1)
             {
-                Q_ASSERT(info1.type() == Hand_Info::A && info1.type_size()==1);
                 if (info1.prime().color() == Card::red_joker)
                     return false;
                 else if(info2.prime().color() == Card::red_joker)

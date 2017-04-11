@@ -165,29 +165,29 @@ CardListList Hinter_Helper::find_BBCC_by_cmap(const ValueMap &cmap)
     return ret;
 }
 
-ValueMap Hinter_Helper::get_map_greater_value_size(const ValueMap &cmap, Card::Value val, size_t size)
+ValueMap Hinter_Helper::get_map_greater_value_size(const ValueMap &cmap, Card::Value val, size_t prime_size)
 {
     ValueMap m;
     for (const ValuePair& p : cmap)
     {
-        if (p.first.value() > val && p.second.size() >= size)
+        if (p.first.value() > val && p.second.size() >= prime_size)
             m.insert(p);
     }
     return m;
 }
 
-CardListList Hinter_Helper::slice_to_group(const ValueMap &cmap, Card::Value val, size_t size)
+CardListList Hinter_Helper::slice_to_group(const ValueMap &cmap, Card::Value val, size_t type_size, size_t prime_size)
 {
-    CardListList ret;
-    ValueMap m = get_map_greater_value_size(cmap, val, size);
+    CardListList groups;
+    ValueMap m = get_map_greater_value_size(cmap, val, prime_size);
     if (m.empty())
-        return ret;
+        return groups;
 
     ValueMap::const_iterator it = m.cbegin();
     const ValuePair& p_start = *it;
     Card card = p_start.first;
     CardList current_list;
-    push_back_n(current_list, p_start.second, size);
+    push_back_n(current_list, p_start.second, prime_size);
 
     for (++it; it!=m.cend(); ++it)
     {
@@ -195,22 +195,23 @@ CardListList Hinter_Helper::slice_to_group(const ValueMap &cmap, Card::Value val
         if (Card::is_next(card.value(), p.first.value()))
         {
             card = p.first;
-            push_back_n(current_list, p.second, size);
+            push_back_n(current_list, p.second, prime_size);
         }
         else
         {
-            ret.push_back(current_list);
+            groups.push_back(current_list);
             card = p.first;
             current_list.clear();
-            push_back_n(current_list, p.second, size);
+            push_back_n(current_list, p.second, prime_size);
         }
     }
     if (!current_list.empty())
-        ret.push_back(current_list);
+        groups.push_back(current_list);
 
+    groups = find_group(groups, type_size, prime_size);
     //move bomb value to end
     CardListList normal_list, bomb_list;
-    for (const CardList& lst : ret)
+    for (const CardList& lst : groups)
     {
         if (is_bomb_list(cmap, lst))
             bomb_list.push_back(lst);
@@ -282,6 +283,7 @@ CardListList Hinter_Helper::get_left_N(const ValueMap &cmap, size_t n)
     {
         ret.push_back(CardList(beg, end));
     }
+    ret.push_back(CardList(beg, end));
     return ret;
 }
 
@@ -328,9 +330,29 @@ bool Hinter_Helper::is_bomb_list(const ValueMap &cmap, const CardList &lst)
     for (const Card& c : lst)
     {
         ValueMap::const_iterator p = cmap.find(c);
-        Q_ASSERT(p!=cmap.cbegin());
+        Q_ASSERT(p!=cmap.cend());
         if (p->second.size() == 4)
             return true;
     }
     return false;
+}
+
+CardListList Hinter_Helper::find_group(const CardListList &groups, size_t type_size, size_t prime_size)
+{
+    CardListList ret;
+    for (const CardList& lst : groups)
+    {
+        if (lst.size() < type_size*prime_size) continue;
+
+        CardList::const_iterator beg = lst.cbegin();
+        CardList::const_iterator end = beg;
+        std::advance(end, type_size*prime_size);
+        for (; end!=lst.cend();
+             std::advance(beg, prime_size), std::advance(end, prime_size))
+        {
+            ret.push_back(CardList(beg, end));
+        }
+        ret.push_back(CardList(beg, end));
+    }
+    return ret;
 }
