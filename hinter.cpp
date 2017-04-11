@@ -3,6 +3,9 @@
 
 CardList Hand_Hinter::next_hint()
 {
+    if (m_hint_queue.empty())
+        return CardList();
+
     CardList lst = m_hint_queue.front();
     m_hint_queue.pop();
     m_hint_queue.push(lst);
@@ -13,13 +16,16 @@ void Hand_Hinter::set_hand(const CardList &cards, const CardList &pre_hand)
 {
     m_cards = cards;
     m_cmap = Hand_Helper::count_value(m_cards);
-
+    m_hint_queue = std::queue<CardList>(); //clear
     Hand_Info info;
     info.set_cards(pre_hand);
-    Q_ASSERT(info.isValid());
+    if (!info.isValid())
+        return;
 
     m_pre_hand = info;
-    m_hint_queue = std::queue<CardList>(); //clear
+
+    if (m_cards.empty())
+        return;
 
     if (m_cards.size() >= m_pre_hand.size())
     {
@@ -83,7 +89,8 @@ void Hand_Hinter::set_hand(const CardList &cards, const CardList &pre_hand)
 
 void Hand_Hinter::process_type_Null()
 {
-
+    Q_ASSERT(m_cmap.size()>0);
+    push_to_front(CardListList(1, m_cmap.cbegin()->second));
 }
 
 void Hand_Hinter::process_type_A()

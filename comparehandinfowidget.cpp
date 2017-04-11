@@ -1,4 +1,5 @@
 #include "comparehandinfowidget.h"
+#include "hinter.h"
 
 CompareHandInfoWidget::CompareHandInfoWidget(QWidget *parent)
     : QWidget(parent)
@@ -59,4 +60,9 @@ void CompareHandInfoWidget::onChanged()
     {
         m_small_big->setText("?");
     }
+
+    Hand_Hinter hinter;
+    hinter.set_hand(m_chooser2->selected_cards(), m_chooser1->selected_cards());
+    m_chooser2->set_hinter(hinter);
+
 }

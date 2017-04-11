@@ -8,9 +8,11 @@ class Item_Rect
 {
 public:
     Item_Rect(const QLineF& rect, QGraphicsScene* scene);
-    Card_Item* init(const Card& c, bool is_animate);
+    Card_Item* init(const Card& c);
 
     bool contains(const Card& c) const;
+
+    void hint(const CardList& cards);
 
     bool add(const Card& c, Card_Item* item);
     Card_Item* remove(const Card& c);

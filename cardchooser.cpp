@@ -28,6 +28,10 @@ void CardChooser::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
     { clean_seleceted(); }
+    else if (event->button() == Qt::MidButton)
+    {
+        show_hint();
+    }
     QGraphicsView::mousePressEvent(event);
 }
 
@@ -52,14 +56,14 @@ void CardChooser::init_card()
 {
     for (int i=0; i<52; )
     {
-        m_diamond_rect.init(Static_Deck::index_card(i++), false);
-        m_club_rect.init(Static_Deck::index_card(i++), false);
-        m_heart_rect.init(Static_Deck::index_card(i++), false);
-        m_spade_rect.init(Static_Deck::index_card(i++), false);
+        m_diamond_rect.init(Static_Deck::index_card(i++));
+        m_club_rect.init(Static_Deck::index_card(i++));
+        m_heart_rect.init(Static_Deck::index_card(i++));
+        m_spade_rect.init(Static_Deck::index_card(i++));
     }
 
-    m_joker_rect.init(Static_Deck::index_card(52), false);
-    m_joker_rect.init(Static_Deck::index_card(53), false);
+    m_joker_rect.init(Static_Deck::index_card(52));
+    m_joker_rect.init(Static_Deck::index_card(53));
 
     init_to_all_item();
 }
@@ -83,6 +87,13 @@ void CardChooser::clean_seleceted()
         unselect(c);
     }
     Q_EMIT sig_slected();
+}
+
+void CardChooser::show_hint()
+{
+    CardList lst = m_hinter.next_hint();
+    qDebug() << lst;
+    m_selected_rect.hint(lst);
 }
 
 void CardChooser::selecet(const Card &c)

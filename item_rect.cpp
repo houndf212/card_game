@@ -12,6 +12,19 @@ bool Item_Rect::contains(const Card &c) const
     return m_map.find(c)!=m_map.cend();
 }
 
+void Item_Rect::hint(const CardList &cards)
+{
+    reset_pos(false);
+    for(const Card& c : cards)
+    {
+        Q_ASSERT(contains(c));
+        Card_Item* item = m_map[c];
+        QPointF p = item->pos();
+        p.ry() -= 20;
+        item->animate_move(p);
+    }
+}
+
 bool Item_Rect::add(const Card &c, Card_Item *item)
 {
     bool b = m_map.insert({c, item}).second;
@@ -42,7 +55,7 @@ CardList Item_Rect::get_cards() const
     return s;
 }
 
-Card_Item *Item_Rect::init(const Card &c, bool is_animate)
+Card_Item *Item_Rect::init(const Card &c)
 {
     if (contains(c))
         return 0;
@@ -50,7 +63,7 @@ Card_Item *Item_Rect::init(const Card &c, bool is_animate)
     Card_Item* item = Card_Item::from_card(c);
     m_scene->addItem(item);
     m_map.insert({c, item});
-    reset_pos(is_animate);
+    reset_pos(false);
     return item;
 }
 
