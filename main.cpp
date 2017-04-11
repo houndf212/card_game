@@ -4,6 +4,7 @@
 #include "testhandinfowidget.h"
 #include "comparehandinfowidget.h"
 #include "hinter.h"
+#include "hinter_helper.h"
 
 void test_hinter()
 {
@@ -39,7 +40,7 @@ void test_hinter()
     all.push_back({Card::heart, Card::V_jack});
     all.push_back({Card::spade, Card::V_jack});
     all.push_back({Card::club, Card::V_jack});
-    all.push_back({Card::diamond, Card::V_jack});
+//    all.push_back({Card::diamond, Card::V_jack});
 
     all.push_back({Card::heart, Card::V_queen});
     all.push_back({Card::spade, Card::V_queen});
@@ -62,8 +63,8 @@ void test_hinter()
     pre_hand.push_back({Card::heart, Card::V_3});
     pre_hand.push_back({Card::spade, Card::V_3});
     pre_hand.push_back({Card::diamond, Card::V_4});
-    pre_hand.push_back({Card::heart, Card::V_4});
-    pre_hand.push_back({Card::spade, Card::V_4});
+//    pre_hand.push_back({Card::heart, Card::V_4});
+//    pre_hand.push_back({Card::spade, Card::V_4});
 //    pre_hand.push_back({Card::diamond, Card::V_5});
 //    pre_hand.push_back({Card::heart, Card::V_5});
 

@@ -79,4 +79,7 @@ inline void sort(CardList &lst)
 typedef std::map<Card, CardList, Value_Less> ValueMap;
 typedef ValueMap::value_type ValuePair;
 
+void push_back_n(CardList& target, const CardList& lst, size_t size);
+void push_back(CardList& target, const CardList& lst);
+
 #endif // CARD_COMPARE_H

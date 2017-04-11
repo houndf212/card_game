@@ -5,19 +5,25 @@
 
 namespace Hinter_Helper
 {
-void push_back(CardList& target, const CardList& lst);
-void push_back_n(CardList& target, const CardList& lst, size_t size);
-
-void remove_map(ValueMap &cmap, const CardList& lst);
-void remove_list(CardList& target, const CardList& m);
+void remove_map_same_value(ValueMap &cmap, const CardList& lst, size_t prime_size, size_t type_size);
+void remove_list_same_value(CardList& target, const CardList& m);
 
 CardList find_B_by_cmap(const ValueMap& cmap, Card::Value floor);
 CardListList find_BB_by_cmap(const ValueMap& cmap, Card::Value floor);
+
+CardListList get_left_N(const ValueMap& cmap, size_t n);
+CardList get_list_by_count(const ValueMap& cmap);
+// ========================================
+//这个函数过于复杂，基本上返回C(size, n)数量巨大 放弃这种方式
+CardListList find_N_by_cmap(const ValueMap &cmap, int n);
 CardListList find_BC_by_cmap(const ValueMap& cmap);
-
-CardListList find_N_by_cmap(const ValueMap& cmap, int n);
-
 CardListList find_BBCC_by_cmap(const ValueMap& cmap);
+void find_N_recursion(CardListList& all,
+                              const ValueMap& cmap,
+                              const CardList& lst,
+                              int n);
+// ========================================
+
 
 CardListList find_AAA_by_cmap(const ValueMap& cmap, Card::Value floor);
 
@@ -25,6 +31,7 @@ CardListList find_AAAA_by_cmap(const ValueMap& cmap, Card::Value floor);
 
 ValueMap get_map_greater_value_size(const ValueMap& cmap, Card::Value val, size_t size);
 CardListList slice_to_group(const ValueMap& cmap, Card::Value val, size_t size);
+bool is_bomb_list(const ValueMap& cmap, const CardList& lst);
 }
 
 #endif // HINTER_HELPER_H
