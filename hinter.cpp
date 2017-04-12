@@ -7,8 +7,8 @@ CardList Hand_Hinter::next_hint()
         return CardList();
 
     CardList lst = m_hint_queue.front();
-    m_hint_queue.pop();
-    m_hint_queue.push(lst);
+    m_hint_queue.pop_front();
+    m_hint_queue.push_back(lst);
     return lst;
 }
 
@@ -16,7 +16,7 @@ void Hand_Hinter::set_hand(const CardList &cards, const CardList &pre_hand)
 {
     m_cards = cards;
     m_cmap = Hand_Helper::count_value(m_cards);
-    m_hint_queue = std::queue<CardList>(); //clear
+    m_hint_queue.clear();
     Hand_Info info;
     info.set_cards(pre_hand);
     if (!info.isValid())
@@ -121,7 +121,7 @@ void Hand_Hinter::process_type_AA()
         lst.pop_back();
     }
     push_to_front(lst);
-//    process_type_A_AA_plus(); // 这个函数也可以，只是提示顺序不是很合理
+//    process_type_A_AA_plus(); // 这个函数也可以
 }
 
 void Hand_Hinter::process_type_AA_plus()
@@ -326,7 +326,7 @@ void Hand_Hinter::push_to_front(const CardListList &lst)
 {
     for (const CardList& l : lst)
     {
-        m_hint_queue.push(l);
+        m_hint_queue.push_back(l);
     }
 }
 
@@ -341,7 +341,7 @@ void Hand_Hinter::add_bomb_to_end()
     CardListList bombs = Hand_Helper::find_all_bomb(m_cmap, v);
     for (const CardList& b : bombs)
     {
-        m_hint_queue.push(b);
+        m_hint_queue.push_back(b);
     }
 }
 

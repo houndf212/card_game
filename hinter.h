@@ -1,6 +1,6 @@
 #ifndef HINTER_H
 #define HINTER_H
-#include <queue>
+#include <deque>
 #include "hand_info.h"
 #include "hand_helper.h"
 
@@ -38,7 +38,7 @@ private:
     CardList m_cards;
     ValueMap m_cmap;
     Hand_Info m_pre_hand;
-    std::queue<CardList> m_hint_queue;
+    std::deque<CardList> m_hint_queue;
 };
 
 #endif // HINTER_H
