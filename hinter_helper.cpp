@@ -31,7 +31,7 @@ void Hinter_Helper::remove_list_same_value(CardList &target, const CardList &m)
     Q_ASSERT(std::is_sorted(target.cbegin(), target.cend()));
     Q_ASSERT(std::is_sorted(m.cbegin(), m.cend()));
     Q_ASSERT(m.front().value() == m.back().value());
-    CardList::const_iterator start = std::find_first_of(target.cbegin(), target.cend(),
+    CardList::const_iterator start = std::search(target.cbegin(), target.cend(),
                                                         m.cbegin(), m.cend());
     Q_ASSERT(start != m.cend());
     CardList::const_iterator end = start;
