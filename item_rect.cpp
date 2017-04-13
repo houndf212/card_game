@@ -1,4 +1,5 @@
 #include "item_rect.h"
+#include "static_cardimage.h"
 
 Item_Rect::Item_Rect(const QLineF &rect, QGraphicsScene* scene)
     :m_line(rect)
@@ -76,15 +77,19 @@ void Item_Rect::reset_pos(bool is_animate)
     QPointF step(m_line.dx(), m_line.dy());
     if (size>=3)
         step /= (size-1);
+
+    step.rx() = std::min<qreal>(step.x(), Static_CardImage::image_size().width());
+    step.ry() = std::min<qreal>(step.y(), Static_CardImage::image_size().height());
     QPointF start = m_line.p1();
 
-    for (std::map<Card, Card_Item*>::const_reverse_iterator iter=m_map.crbegin(); iter!=m_map.crend(); ++iter)
+    for (std::map<Card, Card_Item*>::const_reverse_iterator iter=m_map.crbegin();
+         iter!=m_map.crend();
+         ++iter, start+=step)
     {
         Card_Item* item = iter->second;
         if (is_animate)
             item->animate_move(start);
         else
             item->setPos(start);
-        start+=step;
     }
 }

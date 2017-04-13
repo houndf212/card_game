@@ -2,6 +2,7 @@
 #include "static_deck.h"
 
 Static_CardImage::Map Static_CardImage::m_map;
+QSize Static_CardImage::m_card_size;
 
 QString Static_CardImage::get_file_name(const Card &c)
 {
@@ -37,11 +38,8 @@ void Static_CardImage::init_image()
 
     Q_ASSERT(m_map.size() == Static_Deck::SIZE);
     scale_image();
-}
 
-QSize Static_CardImage::image_size()
-{
-    return m_map.begin()->second.size();
+    m_card_size = m_map.begin()->second.size();
 }
 
 QPixmap Static_CardImage::get_image(const Card &c)

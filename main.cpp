@@ -12,8 +12,6 @@ int main(int argc, char *argv[])
     Static_Deck::init();
     Static_CardImage::init_image();
 
-    qDebug() << "card size: " << Static_CardImage::image_size();
-
     CompareHandInfoWidget w;
     w.show();
 
