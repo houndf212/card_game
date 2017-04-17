@@ -13,7 +13,7 @@ public:
     QByteArray toNetworkData() const;
 
     void setNetworkData(const QByteArray& networkdata);
-    QByteArray getData() const;
+    QByteArray getData() const { return m_data; }
 private:
     QByteArray m_data;
     quint16 m_crc;

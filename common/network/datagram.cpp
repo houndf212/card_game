@@ -11,10 +11,7 @@ bool Datagram::isValid() const
     return m_crc == qChecksum(m_data.data(), m_data.size());
 }
 
-QByteArray Datagram::getData() const
-{
-    return m_data;
-}
+
 
 void Datagram::setData(const QByteArray &data)
 {

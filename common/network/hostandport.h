@@ -9,7 +9,7 @@ public:
     QHostAddress host;
     quint16 port;
 
-    HostAndPort();
+    HostAndPort() : port(0) {}
 };
 
 bool operator ==(const HostAndPort& h1, const HostAndPort& h2);

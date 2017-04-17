@@ -1,11 +1,5 @@
 #include "hostandport.h"
 
-HostAndPort::HostAndPort()
-    :port(0)
-{
-
-}
-
 bool operator ==(const HostAndPort &h1, const HostAndPort &h2)
 {
     return h1.host == h2.host && h1.port == h2.port;
