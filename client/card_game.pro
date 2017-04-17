@@ -25,41 +25,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+include(../common/common.pri)
 
 SOURCES += main.cpp\
-    card.cpp \
-    card_compare.cpp \
-    static_deck.cpp \
-    static_cardimage.cpp \
-    deck.cpp \
     card_item.cpp \
-    item_rect.cpp \
     cardchooser.cpp \
-    handinfowidget.cpp \
-    testhandinfowidget.cpp \
     comparehandinfowidget.cpp \
-    hand_helper.cpp \
-    hinter_helper.cpp \
-    hinter.cpp \
-    hand_info.cpp
+    handinfowidget.cpp \
+    item_rect.cpp \
+    static_cardimage.cpp \
+    testhandinfowidget.cpp
+
 
 HEADERS  += \
-    card.h \
-    card_compare.h \
-    static_deck.h \
-    static_cardimage.h \
-    deck.h \
     card_item.h \
-    pch.h \
-    hand_info.h \
-    item_rect.h \
     cardchooser.h \
-    handinfowidget.h \
-    testhandinfowidget.h \
     comparehandinfowidget.h \
-    hand_helper.h \
-    hinter_helper.h \
-    hinter.h
+    handinfowidget.h \
+    item_rect.h \
+    static_cardimage.h \
+    testhandinfowidget.h
+
 
 RESOURCES += \
     res_cards.qrc
