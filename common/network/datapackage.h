@@ -1,7 +1,7 @@
 #ifndef DATAPACKAGE_H
 #define DATAPACKAGE_H
-#include <QtCore>
 
+#include "netobject.h"
 
 class DataPackage
 {
@@ -13,6 +13,9 @@ public:
         Ask_Heart, //要求 心跳包
         Rep_Heart, //回复 心跳包
 
+        Ask_User,
+        Rep_User,
+
         Ask_Connect, // 请求注册
         Rep_Connect, // 返回注册
     };
@@ -22,15 +25,19 @@ public:
 
     bool isValid() const { return m_type != Invalid; }
 
-    void setType(Type type) { m_type = type; }
-    Type type() const { return m_type; }
+    void add_netobject(const NetObject& netobj);
 
-    void add_data(const QString& key, const QJsonObject& obj);
+    bool get_netobject(NetObject& netobj) const;
+
     QByteArray toByte() const;
     void init_from(const QByteArray& buffer);
+
+    Type type() const;
+    void setType(const Type &type);
 private:
     Type m_type;
     QJsonObject m_data;
 };
+QDebug& operator<<(QDebug& s, const DataPackage& p);
 
 #endif // DATAPACKAGE_H

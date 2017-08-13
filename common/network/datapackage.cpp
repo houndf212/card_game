@@ -6,9 +6,21 @@ DataPackage::DataPackage()
 
 }
 
-void DataPackage::add_data(const QString &key, const QJsonObject &obj)
+void DataPackage::add_netobject(const NetObject &netobj)
 {
-    m_data.insert(key, obj);
+    m_data.insert(netobj.key(), netobj.toJson());
+}
+
+bool DataPackage::get_netobject(NetObject &netobj) const
+{
+    if (m_data.contains(netobj.key()))
+    {
+        QJsonObject obj = m_data.value(netobj.key()).toObject();
+        netobj.fromJson(obj);
+        return true;
+    }
+    else
+        return false;
 }
 
 // e.g {"type_id":1, "type":"ask_heart",data:{..}}
@@ -43,4 +55,19 @@ void DataPackage::init_from(const QByteArray &buffer)
     QString type = all.value("type").toString();
     Q_ASSERT(type == en.valueToKey(m_type));
 #endif
+}
+
+DataPackage::Type DataPackage::type() const
+{
+    return m_type;
+}
+
+void DataPackage::setType(const Type &type)
+{
+    m_type = type;
+}
+
+QDebug& operator<<(QDebug& s, const DataPackage& p)
+{
+    return s<<p.toByte();
 }

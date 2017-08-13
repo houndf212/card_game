@@ -23,3 +23,24 @@ bool operator <(const HostAndPort &h1, const HostAndPort &h2)
     return qHash(h1) < qHash(h2);
 }
 
+
+HostAndPort HostAndPort::peer(const QTcpSocket *sock)
+{
+    HostAndPort h;
+    h.host = sock->peerAddress();
+    h.port = sock->peerPort();
+    return h;
+}
+
+HostAndPort HostAndPort::local(const QTcpSocket *sock)
+{
+    HostAndPort h;
+    h.host = sock->localAddress();
+    h.port = sock->localPort();
+    return h;
+}
+
+QDebug &operator<<(QDebug &d, const HostAndPort &h)
+{
+    return d<<"["<<h.host<<", "<<h.port<<"]";
+}
